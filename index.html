@@ -77,20 +77,23 @@
     </div>
 
 <script>
-    // --- LOGIQUE DU CODE D'ACCÈS ---
+    // --- LOGIQUE DU CODE D'ACCÈS BROUILLÉ ---
     function checkCode() {
         const codeInput = document.getElementById('access-code').value;
-        const correctCode = "123456"; // TON CODE ICI
+        
+        // On n'écrit plus "123456" ici. 
+        // btoa() transforme le texte en code brouillé pour comparer.
+        const encodedInput = btoa(codeInput); 
+        const secretCode = "MTIzNDU2"; // C'est "123456" caché
 
-        if (codeInput === correctCode) {
-            document.getElementById('login-screen').style.display = 'none'; // Cache le verrou
-            document.getElementById('main-site').style.display = 'flex';   // Affiche le site
+        if (encodedInput === secretCode) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-site').style.display = 'flex';
         } else {
             document.getElementById('error-msg').style.display = 'block';
             document.getElementById('access-code').value = "";
         }
     }
-
     // (Le reste de ton code IA précédent : reconnaissance et synthèse vocale)
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'fr-FR';
