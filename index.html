@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mon Site GitHub</title>
+    <title>Mon Site avec Image</title>
+    <style>
+        body {
+            /* On indique le nom de ton image ici */
+            background-image: url('matrix-falling-code-3840x2160-15697.jpg'); 
+            
+            /* Ces lignes servent à ce que l'image recouvre tout l'écran proprement */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            height: 100vh;
+            
+            /* On ajoute une police blanche pour qu'elle soit lisible sur le fond */
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Ombre pour lire le texte */
+        }
+    </style>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding-top: 50px;">
-    <h1>🚀 Bravo ! Mon site est en ligne.</h1>
-    <p>Ceci est ma toute première page hébergée sur GitHub.</p>
+<body>
+    <h1>🌟 Regarde mon nouveau fond !</h1>
+    <p>C'est beaucoup plus stylé comme ça, non ?</p>
 </body>
 </html>
