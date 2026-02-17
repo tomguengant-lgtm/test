@@ -1,32 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Mon Site avec Image</title>
+    <meta charset="UTF-8">
+    <title>Mon Site avec IA</title>
     <style>
-        body {
-            /* On indique le nom de ton image ici */
-            background-image: url('matrix-falling-code-3840x2160-15697.jpg'); 
-            
-            /* Ces lignes servent à ce que l'image recouvre tout l'écran proprement */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            height: 100vh;
-            
-            /* On ajoute une police blanche pour qu'elle soit lisible sur le fond */
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Ombre pour lire le texte */
-        }
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #chat-container { width: 350px; height: 500px; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; }
+        #messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px; border-radius: 10px; max-width: 80%; font-size: 14px; }
+        .user { background: #0084ff; color: white; align-self: flex-end; }
+        .ai { background: #e4e6eb; color: black; align-self: flex-start; }
+        #input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
+        input { flex: 1; border: none; padding: 10px; border-radius: 20px; background: #f0f2f5; outline: none; }
+        button { background: none; border: none; color: #0084ff; font-weight: bold; cursor: pointer; margin-left: 10px; }
     </style>
 </head>
 <body>
-    <h1>My name is Mac. </h1>
-    <p>Welcome to the real world</p>
+
+<div id="chat-container">
+    <div id="messages">
+        <div class="msg ai">Bonjour ! Je suis ton assistant GitHub. Pose-moi une question !</div>
+    </div>
+    <div id="input-area">
+        <input type="text" id="user-input" placeholder="Écris un message...">
+        <button onclick="sendMessage()">Envoyer</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        const input = document.getElementById('user-input');
+        const text = input.value.trim();
+        if (text === "") return;
+
+        // 1. Ajouter le message de l'utilisateur
+        addMessage(text, 'user');
+        input.value = "";
+
+        // 2. Faire "réfléchir" l'IA (petit délai)
+        setTimeout(() => {
+            let response = "Désolé, je n'ai pas compris. Peux-tu reformuler ?";
+            
+            // Simulation de logique IA
+            if (text.toLowerCase().includes("salut")) response = "Salut ! Prêt à coder ?";
+            if (text.toLowerCase().includes("qui es-tu")) response = "Je suis une IA factice créée sur GitHub !";
+            if (text.toLowerCase().includes("github")) response = "C'est la meilleure plateforme du monde !";
+
+            addMessage(response, 'ai');
+        }, 800);
+    }
+
+    function addMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'msg ' + sender;
+        msgDiv.innerText = text;
+        document.getElementById('messages').appendChild(msgDiv);
+        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+    }
+</script>
+
 </body>
 </html>
