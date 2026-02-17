@@ -2,62 +2,69 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Site avec IA</title>
+    <title>Mon Site avec Vraie IA</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #chat-container { width: 350px; height: 500px; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; }
-        #messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px; border-radius: 10px; max-width: 80%; font-size: 14px; }
-        .user { background: #0084ff; color: white; align-self: flex-end; }
-        .ai { background: #e4e6eb; color: black; align-self: flex-start; }
-        #input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
-        input { flex: 1; border: none; padding: 10px; border-radius: 20px; background: #f0f2f5; outline: none; }
-        button { background: none; border: none; color: #0084ff; font-weight: bold; cursor: pointer; margin-left: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        #chat-box { width: 400px; height: 500px; background: #2d2d2d; border-radius: 10px; display: flex; flex-direction: column; border: 1px solid #444; }
+        #messages { flex: 1; padding: 20px; overflow-y: auto; font-size: 14px; }
+        .user { color: #00ffcc; margin-bottom: 10px; }
+        .ai { color: #ffffff; margin-bottom: 15px; border-left: 2px solid #00ffcc; padding-left: 10px; }
+        #input-area { padding: 15px; display: flex; border-top: 1px solid #444; }
+        input { flex: 1; background: #3d3d3d; border: none; color: white; padding: 10px; border-radius: 5px; outline: none; }
+        button { background: #00ffcc; border: none; padding: 10px 15px; margin-left: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #api-key-area { margin-bottom: 10px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div id="chat-container">
-    <div id="messages">
-        <div class="msg ai">Bonjour ! Je suis ton assistant GitHub. Pose-moi une question !</div>
+    <div id="api-key-area">
+        Clé API : <input type="password" id="api-key" placeholder="Colle ta clé sk-..." style="width: 200px; font-size: 10px;">
     </div>
-    <div id="input-area">
-        <input type="text" id="user-input" placeholder="Écris un message...">
-        <button onclick="sendMessage()">Envoyer</button>
+
+    <div id="chat-box">
+        <div id="messages"></div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Pose une question à GPT-4...">
+            <button onclick="askAI()">Envoyer</button>
+        </div>
     </div>
-</div>
 
 <script>
-    function sendMessage() {
-        const input = document.getElementById('user-input');
-        const text = input.value.trim();
-        if (text === "") return;
+    async function askAI() {
+        const apiKey = document.getElementById('api-key').value;
+        const userInput = document.getElementById('user-input').value;
+        const messagesDiv = document.getElementById('messages');
 
-        // 1. Ajouter le message de l'utilisateur
-        addMessage(text, 'user');
-        input.value = "";
+        if (!apiKey) { alert("Oublie pas ta clé API !"); return; }
+        if (!userInput) return;
 
-        // 2. Faire "réfléchir" l'IA (petit délai)
-        setTimeout(() => {
-            let response = "Désolé, je n'ai pas compris. Peux-tu reformuler ?";
-            
-            // Simulation de logique IA
-            if (text.toLowerCase().includes("salut")) response = "Salut ! Prêt à coder ?";
-            if (text.toLowerCase().includes("qui es-tu")) response = "Je suis une IA factice créée sur GitHub !";
-            if (text.toLowerCase().includes("github")) response = "C'est la meilleure plateforme du monde !";
+        // Afficher le message de l'utilisateur
+        messagesDiv.innerHTML += `<div class="user"><b>Toi:</b> ${userInput}</div>`;
+        document.getElementById('user-input').value = "";
 
-            addMessage(response, 'ai');
-        }, 800);
-    }
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo", // ou "gpt-4" si tu as les droits
+                    messages: [{role: "user", content: userInput}]
+                })
+            });
 
-    function addMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'msg ' + sender;
-        msgDiv.innerText = text;
-        document.getElementById('messages').appendChild(msgDiv);
-        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+            const data = await response.json();
+            const aiText = data.choices[0].message.content;
+
+            // Afficher la réponse de l'IA
+            messagesDiv.innerHTML += `<div class="ai"><b>IA:</b> ${aiText}</div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        } catch (error) {
+            messagesDiv.innerHTML += `<div class="ai" style="color:red">Erreur : Vérifie ta clé ou ton crédit.</div>`;
+        }
     }
 </script>
-
 </body>
 </html>
