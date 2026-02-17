@@ -2,93 +2,136 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>IA Vocale GitHub</title>
+    <title>Site Sécurisé - IA</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        #chat-box { width: 90%; max-width: 400px; height: 500px; background: #1e1e1e; border-radius: 15px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* --- STYLE DE L'ÉCRAN DE CONNEXION --- */
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #121212;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 9999; /* Toujours au-dessus */
+        }
+        .login-box {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .login-box input {
+            padding: 10px; font-size: 18px; border-radius: 5px;
+            border: none; margin: 10px 0; text-align: center;
+        }
+        .login-box button {
+            background: #00ffcc; border: none; padding: 10px 20px;
+            border-radius: 5px; font-weight: bold; cursor: pointer;
+        }
+
+        /* --- TON SITE (Caché au début) --- */
+        #main-site {
+            display: none; /* CACHÉ PAR DÉFAUT */
+            font-family: 'Segoe UI', sans-serif;
+            background: #121212; color: white;
+            flex-direction: column; align-items: center;
+            justify-content: center; height: 100vh; margin: 0;
+        }
+        /* (Le reste du style de ton IA ci-dessous) */
+        #chat-box { width: 90%; max-width: 400px; height: 500px; background: #1e1e1e; border-radius: 15px; display: flex; flex-direction: column; }
         #messages { flex: 1; padding: 20px; overflow-y: auto; }
         .user { color: #00ffcc; text-align: right; margin-bottom: 10px; }
         .ai { color: #ffffff; border-left: 3px solid #00ffcc; padding-left: 10px; margin-bottom: 15px; }
         #controls { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; }
-        input { flex: 1; background: #2d2d2d; border: none; color: white; padding: 12px; border-radius: 8px; outline: none; }
-        button { background: #00ffcc; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { opacity: 0.8; }
-        #mic-btn { background: #ff4757; color: white; } /* Bouton micro rouge */
-        #api-key-area { margin-bottom: 10px; }
+        #controls input { flex: 1; background: #2d2d2d; border: none; color: white; padding: 12px; border-radius: 8px; }
+        #controls button { background: #00ffcc; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        #mic-btn { background: #ff4757; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="api-key-area">
-        <input type="password" id="api-key" placeholder="Ta clé OpenAI ici..." style="width: 250px;">
+    <div id="login-screen">
+        <div class="login-box">
+            <h2 style="color: white;">🔐 Accès Restreint</h2>
+            <p style="color: #aaa;">Entrez le code pour continuer</p>
+            <input type="password" id="access-code" placeholder="Code à 6 chiffres">
+            <br>
+            <button onclick="checkCode()">Entrer</button>
+            <p id="error-msg" style="color: red; display: none; font-size: 12px; margin-top: 10px;">Code incorrect !</p>
+        </div>
     </div>
 
-    <div id="chat-box">
-        <div id="messages"></div>
-        <div id="controls">
-            <input type="text" id="user-input" placeholder="Parle ou écris...">
-            <button id="mic-btn" onclick="startListening()">🎤</button>
-            <button onclick="askAI()">Envoyer</button>
+    <div id="main-site">
+        <div style="margin-bottom: 10px;">
+            <input type="password" id="api-key" placeholder="Ta clé OpenAI ici..." style="width: 250px; background: #2d2d2d; border: none; color: white; padding: 5px; border-radius: 5px;">
+        </div>
+
+        <div id="chat-box">
+            <div id="messages"></div>
+            <div id="controls">
+                <input type="text" id="user-input" placeholder="Parle ou écris...">
+                <button id="mic-btn" onclick="startListening()">🎤</button>
+                <button onclick="askAI()">Envoyer</button>
+            </div>
         </div>
     </div>
 
 <script>
-    // --- 1. RECONNAISSANCE VOCALE (ÉCOUTER) ---
+    // --- LOGIQUE DU CODE D'ACCÈS ---
+    function checkCode() {
+        const codeInput = document.getElementById('access-code').value;
+        const correctCode = "123456"; // TON CODE ICI
+
+        if (codeInput === correctCode) {
+            document.getElementById('login-screen').style.display = 'none'; // Cache le verrou
+            document.getElementById('main-site').style.display = 'flex';   // Affiche le site
+        } else {
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('access-code').value = "";
+        }
+    }
+
+    // (Le reste de ton code IA précédent : reconnaissance et synthèse vocale)
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'fr-FR';
 
     function startListening() {
         recognition.start();
-        document.getElementById('mic-btn').innerText = "🛑"; // Change l'icône pendant l'écoute
+        document.getElementById('mic-btn').innerText = "🛑";
     }
 
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         document.getElementById('user-input').value = transcript;
         document.getElementById('mic-btn').innerText = "🎤";
-        askAI(); // Envoie automatiquement après avoir parlé
+        askAI();
     };
 
-    // --- 2. SYNTHÈSE VOCALE (PARLER) ---
     function speak(text) {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'fr-FR';
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- 3. LOGIQUE IA ---
     async function askAI() {
         const apiKey = document.getElementById('api-key').value;
         const userInput = document.getElementById('user-input').value;
         const messagesDiv = document.getElementById('messages');
-
         if (!apiKey || !userInput) return;
-
         messagesDiv.innerHTML += `<div class="user">${userInput}</div>`;
         document.getElementById('user-input').value = "";
-
         try {
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [{role: "user", content: userInput}]
-                })
+                body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: userInput}] })
             });
-
             const data = await response.json();
             const aiText = data.choices[0].message.content;
-
             messagesDiv.innerHTML += `<div class="ai"><b>IA:</b> ${aiText}</div>`;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            // FAIRE PARLER L'IA
             speak(aiText);
-
-        } catch (error) {
-            alert("Erreur. Vérifie ta clé ou ton crédit.");
-        }
+        } catch (error) { alert("Erreur."); }
     }
 </script>
 </body>
