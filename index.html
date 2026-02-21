@@ -34,7 +34,7 @@
         .schedule-table { width: 100%; border-collapse: collapse; min-width: 800px; table-layout: fixed; }
         th { background: var(--neon-violet); color: white; padding: 12px; font-size: 12px; position: sticky; top: 0; }
         .time-col { background: rgba(0,0,0,0.4); font-weight: bold; color: var(--neon-cyan); width: 100px; text-align: center; font-size: 11px; }
-        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 45px; font-size: 11px; outline: none; word-wrap: break-word; line-height: 1.2; }
+        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 45px; font-size: 11px; outline: none; word-wrap: break-word; line-height: 1.2; text-align: center; }
         td:focus { background: rgba(180, 73, 204, 0.2); border: 1px solid var(--neon-violet); }
 
         .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
@@ -52,7 +52,7 @@
 
     <div id="main-app">
         <nav>
-            <button class="nav-btn active" onclick="showTab('ai-tab')">IA Vocale</button>
+            <button class="nav-btn active" onclick="showTab('ai-tab')">Assistant IA</button>
             <button class="nav-btn" onclick="showTab('plan-tab')">Planning Scolaire</button>
         </nav>
 
@@ -61,8 +61,7 @@
                 <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:95%; margin-bottom:15px; background:rgba(0,0,0,0.5); border:1px solid #555; color:white; padding:8px;">
                 <div id="messages" style="height:300px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="user-input" placeholder="Message..." style="flex:1; background:rgba(0,0,0,0.5); border:1px solid #555; color:white; padding:10px;">
-                    <button onclick="startListening()" style="background:var(--neon-violet); border:none; border-radius:50%; width:45px; cursor:pointer;">🎤</button>
+                    <input type="text" id="user-input" placeholder="Écrivez votre message..." style="flex:1; background:rgba(0,0,0,0.5); border:1px solid #555; color:white; padding:10px; border-radius:5px;">
                     <button onclick="askAI()" class="btn-action" style="margin:0;">OK</button>
                 </div>
              </div>
@@ -82,40 +81,19 @@
                 </table>
             </div>
             <button onclick="saveSchedule()" class="btn-action">ENREGISTRER MES MODIFS</button>
-            <p style="font-size:10px; color:#888; margin-top:10px;">Note : Le planning officiel revient chaque dimanche à minuit.</p>
         </div>
     </div>
 
 <script>
-    // --- 1. TES COURS OFFICIELS (Issus de ton image) ---
+    // --- 1. TES COURS OFFICIELS ---
     const defaultCourses = {
-        // Lundi (1)
         "8-1": "MATHÉMATIQUES (Gillet F. L110)", "9-1": "MATHÉMATIQUES (Gillet F. L110)",
         "10-1": "PHYSIQUE-CHIMIE (Gilson J. V102)", "11-1": "PHYSIQUE-CHIMIE (Gilson J. V102)",
-        "12-1": "PAUSE ",
-        "13-1": "SI (Benardeau / Bonel)", "14-1": "SI (Benardeau / Bonel)", "15-1": "SI (Benardeau / Bonel)", "16-1": "SI (Benardeau / Bonel)",
-        // Mardi (2)
-        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)",
-        "11-2": "PHYSIQUE (V102)",
-        "12-2": "PAUSE ",
-        "15-2": "ANGLAIS LV1 (L110)", "16-2": "ANGLAIS LV1 (L110)",
-        // Mercredi (3)
-        "8-3": "PHYSIQUE (V102)", "9-3": "PHYSIQUE (V102)",
-        "10-3": "SI (Bonel)", "11-3": "SI (Bonel)",
-        "12-3": "PAUSE ",
-        "13-3": "SI (Benardeau)","14-3": "SI (Benardeau)",
-        "15-3": "SI (Benardeau)", "16-3": "SI (Benardeau)",
-        // Jeudi (4)
-        "8-4": "SI (L110)", "9-4": "SI (L110)",
-        "10-4": "MATHS (L110)", "11-4": "MATHS (L110)",
-        "12-4": "PAUSE ",
-        "13-4": "FRANCAIS-PHILO", "14-4": "FRANCAIS-PHILO",
-        "15-4": "PHYSIQUE (V103)", "16-4": "PHYSIQUE (V103)",
-        // Vendredi (5)
-        "8-5": "PHYSIQUE (V203)", "9-5": "PHYSIQUE (V203)",
-        "10-5": "MATHS (L110)", "11-5": "MATHS (L110)",
-        "12-5": "PAUSE ","13-5": "TIPE ","14-5": "TIPE ",
-        // Samedi (6)
+        "12-1": "PAUSE ", "13-1": "SI (Benardeau / Bonel)", "14-1": "SI (Benardeau / Bonel)", "15-1": "SI (Benardeau / Bonel)", "16-1": "SI (Benardeau / Bonel)",
+        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PHYSIQUE (V102)", "12-2": "PAUSE ", "15-2": "ANGLAIS LV1 (L110)", "16-2": "ANGLAIS LV1 (L110)",
+        "8-3": "PHYSIQUE (V102)", "9-3": "PHYSIQUE (V102)", "10-3": "SI (Bonel)", "11-3": "SI (Bonel)", "12-3": "PAUSE ", "13-3": "SI (Benardeau)","14-3": "SI (Benardeau)", "15-3": "SI (Benardeau)", "16-3": "SI (Benardeau)",
+        "8-4": "SI (L110)", "9-4": "SI (L110)", "10-4": "MATHS (L110)", "11-4": "MATHS (L110)", "12-4": "PAUSE ", "13-4": "FRANCAIS-PHILO", "14-4": "FRANCAIS-PHILO", "15-4": "PHYSIQUE (V103)", "16-4": "PHYSIQUE (V103)",
+        "8-5": "PHYSIQUE (V203)", "9-5": "PHYSIQUE (V203)", "10-5": "MATHS (L110)", "11-5": "MATHS (L110)", "12-5": "PAUSE ","13-5": "TIPE ","14-5": "TIPE ",
         "8-6": "DS","9-6": "DS","10-6": "DS","11-6": "DS"
     };
 
@@ -123,14 +101,12 @@
     const tableBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
         let row = `<tr><td class="time-col">${h}h- ${h+1}h</td>`;
-        for (let d = 1; d <= 7; d++) {
-            row += `<td contenteditable="true" id="cell-${h}-${d}"></td>`;
-        }
+        for (let d = 1; d <= 7; d++) { row += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
         row += `</tr>`;
         tableBody.innerHTML += row;
     }
 
-    // --- SÉCURITÉ (tom1234) ---
+    // --- SÉCURITÉ ---
     function unlock() {
         if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
             document.getElementById('login-screen').style.display = 'none';
@@ -147,65 +123,20 @@
         event.target.classList.add('active');
     }
 
-    // --- SAUVEGARDE & CHARGEMENT ---
-    function saveSchedule() {
-        for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <= 7; d++) {
-                const text = document.getElementById(`cell-${h}-${d}`).innerText;
-                localStorage.setItem(`plan-${h}-${d}`, text);
-            }
-        }
-        localStorage.setItem('last_week', getWeekNumber(new Date()));
-        alert("Modifications enregistrées pour cette semaine !");
-    }
-
-    function loadSchedule() {
-        for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <= 7; d++) {
-                const cell = document.getElementById(`cell-${h}-${d}`);
-                const saved = localStorage.getItem(`plan-${h}-${d}`);
-                const def = defaultCourses[`${h}-${d}`];
-                
-                // Si on a une modif sauvée, on l'affiche. Sinon, le cours par défaut.
-                cell.innerText = saved !== null ? saved : (def || "");
-                
-                // Petit style pour différencier les cours officiels
-                if(!saved && def) cell.style.color = "var(--neon-cyan)";
-                else cell.style.color = "white";
-            }
-        }
-    }
-
-    function checkAutoReset() {
-        const currentWeek = getWeekNumber(new Date());
-        const lastWeek = localStorage.getItem('last_week');
-        if (lastWeek && currentWeek !== parseInt(lastWeek)) {
-            // C'est une nouvelle semaine ! On vide les modifs de l'utilisateur
-            for (let i = 0; i < localStorage.length; i++){
-                let key = localStorage.key(i);
-                if(key.startsWith("plan-")) { localStorage.removeItem(key); i--; }
-            }
-        }
-    }
-
-    function getWeekNumber(d) {
-        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-        return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-    }
-
-    // (Code de l'IA Vocale identique à précédemment...)
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'fr-FR';
-    function startListening() { recognition.start(); }
-    recognition.onresult = (e) => { document.getElementById('user-input').value = e.results[0][0].transcript; askAI(); };
+    // --- IA (SANS VOCAL) ---
     async function askAI() {
         const key = document.getElementById('api-key').value;
-        const msg = document.getElementById('user-input').value;
+        const inputField = document.getElementById('user-input');
+        const msg = inputField.value.trim();
+        
         if(!key || !msg) return;
+        
         const box = document.getElementById('messages');
-        box.innerHTML += `<div class="msg user">${msg}</div>`;
+        box.innerHTML += `<div style="background:var(--neon-violet); padding:8px; border-radius:10px; align-self:flex-end; font-size:13px; max-width:80%;">${msg}</div>`;
+        
+        // VIDER LA BARRE ICI
+        inputField.value = ""; 
+
         try {
             const resp = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
@@ -214,10 +145,49 @@
             });
             const data = await resp.json();
             const reply = data.choices[0].message.content;
-            box.innerHTML += `<div class="msg ai"><b>IA:</b> ${reply}</div>`;
+            box.innerHTML += `<div style="background:rgba(255,255,255,0.1); padding:8px; border-radius:10px; border-left:3px solid var(--neon-cyan); font-size:13px; max-width:80%;"><b>IA:</b> ${reply}</div>`;
             box.scrollTop = box.scrollHeight;
-            const ut = new SpeechSynthesisUtterance(reply); ut.lang = 'fr-FR'; window.speechSynthesis.speak(ut);
         } catch(e) { alert("Erreur API"); }
+    }
+
+    // --- PLANNING ---
+    function saveSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText);
+            }
+        }
+        localStorage.setItem('last_week', getWeekNumber(new Date()));
+        alert("Enregistré !");
+    }
+
+    function loadSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                const cell = document.getElementById(`cell-${h}-${d}`);
+                const saved = localStorage.getItem(`plan-${h}-${d}`);
+                const def = defaultCourses[`${h}-${d}`];
+                cell.innerText = saved !== null ? saved : (def || "");
+                cell.style.color = (saved === null && def) ? "var(--neon-cyan)" : "white";
+            }
+        }
+    }
+
+    function checkAutoReset() {
+        const currentWeek = getWeekNumber(new Date());
+        const lastWeek = localStorage.getItem('last_week');
+        if (lastWeek && currentWeek !== parseInt(lastWeek)) {
+            for (let i = 0; i < localStorage.length; i++){
+                let key = localStorage.key(i);
+                if(key && key.startsWith("plan-")) { localStorage.removeItem(key); i--; }
+            }
+        }
+    }
+
+    function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+        return Math.ceil((((d - new Date(Date.UTC(d.getUTCFullYear(),0,1))) / 86400000) + 1)/7);
     }
 </script>
 </body>
