@@ -8,7 +8,7 @@
         :root {
             --bg-dark: #0f0c29;
             --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            --neon-pink: #ff007f;
+            --neon-violet: #b449cc; /* Ta nouvelle couleur */
             --neon-cyan: #00d2ff;
             --glass: rgba(255, 255, 255, 0.05);
         }
@@ -26,8 +26,8 @@
         }
         .login-card {
             background: var(--glass); padding: 40px; border-radius: 20px;
-            backdrop-filter: blur(10px); border: 1px solid var(--neon-pink);
-            text-align: center; box-shadow: 0 0 20px var(--neon-pink);
+            backdrop-filter: blur(10px); border: 1px solid var(--neon-violet);
+            text-align: center; box-shadow: 0 0 20px var(--neon-violet);
         }
         input[type="password"] {
             background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan);
@@ -37,98 +37,101 @@
         /* --- MISE EN PAGE PRINCIPALE --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
 
-        /* Navigation */
         nav {
-            display: flex; justify-content: center; gap: 20px; padding: 20px;
-            background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass);
+            display: flex; justify-content: center; gap: 20px; padding: 15px;
+            background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass);
         }
         .nav-btn {
             background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            padding: 10px 25px; border-radius: 30px; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px; font-size: 12px;
+            padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; font-size: 11px;
         }
         .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
 
-        /* Onglets */
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
-        /* --- DESIGN IA --- */
+        /* --- IA --- */
         #ai-container { width: 100%; max-width: 500px; background: var(--glass); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        #messages { height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; }
+        #messages { height: 300px; overflow-y: auto; margin-bottom: 20px; }
         .msg { margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; max-width: 80%; }
-        .user { background: var(--neon-pink); align-self: flex-end; margin-left: auto; }
+        .user { background: var(--neon-violet); align-self: flex-end; margin-left: auto; }
         .ai { background: rgba(255,255,255,0.1); border-left: 3px solid var(--neon-cyan); }
 
-        /* --- DESIGN PLANNING --- */
-        .schedule-table { width: 100%; max-width: 800px; border-collapse: collapse; background: var(--glass); border-radius: 15px; overflow: hidden; }
-        th { background: var(--neon-pink); color: white; padding: 15px; text-transform: uppercase; font-size: 13px; }
-        td { border: 1px solid rgba(255,255,255,0.05); padding: 10px; height: 60px; vertical-align: top; font-size: 14px; outline: none; }
-        td:focus { background: rgba(0, 210, 255, 0.1); border: 1px solid var(--neon-cyan); }
+        /* --- PLANNING HORAIRE --- */
+        .schedule-container { width: 100%; max-width: 900px; overflow-x: auto; background: var(--glass); border-radius: 15px; }
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 12px; position: sticky; top: 0; }
+        .time-col { background: rgba(0,0,0,0.3); font-weight: bold; color: var(--neon-cyan); width: 80px; text-align: center; font-size: 11px; }
+        td { border: 1px solid rgba(255,255,255,0.05); padding: 5px; height: 35px; font-size: 12px; outline: none; min-width: 80px; }
+        td:focus { background: rgba(180, 73, 204, 0.2); border: 1px solid var(--neon-violet); }
 
-        .btn-action { background: var(--neon-pink); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="color: var(--neon-cyan)">ACCÈS SÉCURISÉ</h2>
-            <input type="password" id="code" placeholder="PIN CODE">
+            <h2 style="color: var(--neon-cyan)">ACCÈS HUB</h2>
+            <input type="password" id="code" placeholder="CODE PIN">
             <button onclick="unlock()" class="btn-action">ENTRER</button>
         </div>
     </div>
 
     <div id="main-app">
         <nav>
-            <button class="nav-btn active" onclick="showTab('ai-tab')">Assistant IA</button>
-            <button class="nav-btn" onclick="showTab('plan-tab')">Planning Semaine</button>
+            <button class="nav-btn active" onclick="showTab('ai-tab')">IA Vocale</button>
+            <button class="nav-btn" onclick="showTab('plan-tab')">Emploi du temps</button>
         </nav>
 
         <div id="ai-tab" class="tab-content active">
             <div id="ai-container">
-                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:90%; margin-bottom:10px;">
+                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:90%; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid #444; color:white; padding:5px;">
                 <div id="messages"></div>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="user-input" placeholder="Parlez ou écrivez...">
-                    <button onclick="startListening()" style="background:var(--neon-pink); border:none; border-radius:50%; padding:10px;">🎤</button>
+                    <input type="text" id="user-input" placeholder="Message..." style="flex:1; background:rgba(0,0,0,0.3); border:1px solid #444; color:white; padding:10px; border-radius:5px;">
+                    <button onclick="startListening()" style="background:var(--neon-violet); border:none; border-radius:50%; width:40px; cursor:pointer;">🎤</button>
                     <button onclick="askAI()" class="btn-action" style="margin:0;">OK</button>
                 </div>
             </div>
         </div>
 
         <div id="plan-tab" class="tab-content">
-            <h2 style="color: var(--neon-cyan)">VOTRE SEMAINE</h2>
-            <table class="schedule-table" id="schedule">
-                <thead>
-                    <tr>
-                        <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td contenteditable="true" id="d1"></td>
-                        <td contenteditable="true" id="d2"></td>
-                        <td contenteditable="true" id="d3"></td>
-                        <td contenteditable="true" id="d4"></td>
-                        <td contenteditable="true" id="d5"></td>
-                        <td contenteditable="true" id="d6"></td>
-                        <td contenteditable="true" id="d7"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button onclick="saveSchedule()" class="btn-action">Sauvegarder Manuellement</button>
-            <p style="font-size:10px; color:gray; margin-top:20px;">Réinitialisation automatique chaque dimanche à 23h59</p>
+            <div class="schedule-container">
+                <table class="schedule-table" id="schedule-body">
+                    <thead>
+                        <tr>
+                            <th style="background:#000">Heure</th>
+                            <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-rows">
+                        </tbody>
+                </table>
+            </div>
+            <button onclick="saveSchedule()" class="btn-action">Sauvegarder les modifications</button>
         </div>
     </div>
 
 <script>
-    // --- SECURITÉ & ONGLETS ---
+    // --- GÉNÉRATION DU TABLEAU ---
+    const tableRows = document.getElementById('table-rows');
+    for (let h = 8; h < 22; h++) {
+        let row = `<tr><td class="time-col">${h}h - ${h+1}h</td>`;
+        for (let d = 1; d <= 7; d++) {
+            row += `<td contenteditable="true" id="cell-${h}-${d}"></td>`;
+        }
+        row += `</tr>`;
+        tableRows.innerHTML += row;
+    }
+
+    // --- LOGIQUE GÉNÉRALE ---
     function unlock() {
         if(btoa(document.getElementById('code').value) === "MTIzNDU2") {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
-            checkAutoReset(); // Vérifie si on doit reset le planning
+            checkAutoReset();
             loadSchedule();
         }
     }
@@ -140,10 +143,9 @@
         event.target.classList.add('active');
     }
 
-    // --- LOGIQUE IA (Version simplifiée) ---
+    // --- LOGIQUE IA ---
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'fr-FR';
-
     function startListening() { recognition.start(); }
     recognition.onresult = (e) => { document.getElementById('user-input').value = e.results[0][0].transcript; askAI(); };
 
@@ -151,11 +153,8 @@
         const key = document.getElementById('api-key').value;
         const msg = document.getElementById('user-input').value;
         if(!key || !msg) return;
-        
         const box = document.getElementById('messages');
         box.innerHTML += `<div class="msg user">${msg}</div>`;
-        document.getElementById('user-input').value = "";
-
         try {
             const resp = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
@@ -169,29 +168,31 @@
         } catch(e) { alert("Erreur API"); }
     }
 
-    // --- LOGIQUE PLANNING ---
+    // --- LOGIQUE SAUVEGARDE ---
     function saveSchedule() {
-        for(let i=1; i<=7; i++) {
-            localStorage.setItem('day'+i, document.getElementById('d'+i).innerText);
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                const content = document.getElementById(`cell-${h}-${d}`).innerText;
+                localStorage.setItem(`plan-${h}-${d}`, content);
+            }
         }
-        localStorage.setItem('last_save_week', getWeekNumber(new Date()));
-        alert("Planning sauvegardé !");
+        localStorage.setItem('last_week_num', getWeekNumber(new Date()));
+        alert("Modifications enregistrées !");
     }
 
     function loadSchedule() {
-        for(let i=1; i<=7; i++) {
-            document.getElementById('d'+i).innerText = localStorage.getItem('day'+i) || "";
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                document.getElementById(`cell-${h}-${d}`).innerText = localStorage.getItem(`plan-${h}-${d}`) || "";
+            }
         }
     }
 
     function checkAutoReset() {
-        const now = new Date();
-        const currentWeek = getWeekNumber(now);
-        const lastWeek = localStorage.getItem('last_save_week');
-
-        // Si on change de semaine, on vide tout
+        const currentWeek = getWeekNumber(new Date());
+        const lastWeek = localStorage.getItem('last_week_num');
         if (lastWeek && currentWeek !== parseInt(lastWeek)) {
-            for(let i=1; i<=7; i++) localStorage.removeItem('day'+i);
+            localStorage.clear(); // Reset tout si nouvelle semaine
             loadSchedule();
         }
     }
