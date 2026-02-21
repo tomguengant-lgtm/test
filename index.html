@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v5.0 RED RING</title>
+    <title>YourSpace - Global Cyber Hub v5.1 RED VOID</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -31,111 +31,79 @@
             width: 100%;
             height: 100%;
             object-fit: contain; 
-            transform: scale(1.3);
+            transform: scale(0.5); /* Dézoom 50% */
             filter: brightness(0.4) sepia(1) hue-rotate(-50deg) saturate(3);
         }
 
-        /* --- LOGIN SCREEN --- */
+        /* --- LOGIN SCREEN (ENLARGED) --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 5000; }
         .login-card { background: rgba(30, 0, 0, 0.8); padding: 60px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 40px var(--neon-violet); width: 100%; max-width: 450px; }
         .login-card h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 3px; color: var(--neon-cyan); }
         input { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; font-size: 14px; width: 80%; }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGATION (ENLARGED) --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
         nav { display: none; justify-content: center; gap: 15px; padding: 25px; background: rgba(20,0,0,0.9); border-bottom: 3px solid var(--neon-violet); flex-wrap: wrap; z-index: 10; }
         .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 28px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
         .nav-btn.active { background: var(--neon-violet); color: white; box-shadow: 0 0 20px var(--neon-violet); }
 
-        /* --- HUB CIRCULAIRE (RED RING) --- */
-        #hub-menu { 
-            display: none; 
-            flex: 1; 
-            align-items: center; 
-            justify-content: center; 
-            flex-direction: column; 
-            z-index: 5; 
-        }
+        /* --- HUB CIRCULAIRE (HOLLOW RING) --- */
+        #hub-menu { display: none; flex: 1; align-items: center; justify-content: center; z-index: 5; }
 
         .ring-container {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 480px;
+            height: 480px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 15px; /* L'écart entre les onglets comme sur l'image */
-            padding: 10px;
+            gap: 20px;
+            /* Masque circulaire pour créer le trou au milieu sans div noire */
+            mask-image: radial-gradient(circle, transparent 30%, black 31%);
+            -webkit-mask-image: radial-gradient(circle, transparent 30%, black 31%);
         }
 
         .hub-item {
             position: relative;
-            background: rgba(100, 0, 0, 0.3);
-            border: 2px solid var(--neon-violet);
+            background: rgba(150, 0, 0, 0.2);
+            border: 3px solid var(--neon-violet);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s;
             backdrop-filter: blur(10px);
-            overflow: hidden;
         }
 
-        /* Formes de quart de cercle */
         .hub-item.top-left { border-radius: 100% 0 0 0; }
         .hub-item.top-right { border-radius: 0 100% 0 0; }
         .hub-item.bottom-left { border-radius: 0 0 0 100%; }
         .hub-item.bottom-right { border-radius: 0 0 100% 0; }
 
-        .hub-item:hover {
-            background: var(--neon-violet);
-            box-shadow: 0 0 50px var(--neon-violet);
-            transform: scale(1.05);
-            z-index: 10;
-        }
-
-        .hub-item h3 {
-            font-size: 18px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            pointer-events: none;
-            text-shadow: 0 0 10px black;
-        }
-
-        /* Le cercle vide au milieu */
-        .center-hole {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 180px;
-            height: 180px;
-            background: black;
-            border: 4px solid var(--neon-violet);
-            border-radius: 50%;
-            z-index: 15;
-            box-shadow: inset 0 0 30px var(--neon-violet), 0 0 20px var(--neon-violet);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .center-hole::after {
-            content: "SYSTEM RED";
-            font-family: monospace;
-            color: var(--neon-cyan);
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
+        .hub-item:hover { background: var(--neon-violet); box-shadow: 0 0 40px var(--neon-violet); transform: scale(1.03); z-index: 10; }
+        .hub-item h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 5px black; }
 
         /* --- TABS CONTENT --- */
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; z-index: 5; }
         .tab-content.active { display: flex; }
 
+        .gateway-card { background: rgba(30,0,0,0.8); padding: 50px; border-radius: 20px; border: 2px solid var(--neon-violet); text-align: center; max-width: 500px; margin-top: 50px; box-shadow: 0 0 30px rgba(255,0,0,0.2); }
+
+        /* --- AI FIX VISIBILITY --- */
+        #ai-container { width: 100%; max-width: 600px; background: #120202; padding: 30px; border-radius: 20px; border: 1px solid var(--neon-violet); }
+        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; color: #fff; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        #user-input { 
+            width: 80%; 
+            background: #2a0a0a !important; 
+            color: #ffffff !important; /* Texte Blanc */
+            border: 1px solid var(--neon-violet) !important;
+            padding: 15px;
+            font-weight: bold;
+        }
+
         .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 10px; background: rgba(30,0,0,0.5); }
         th { background: var(--neon-violet); color: white; padding: 8px; }
-        td { border: 1px solid rgba(255,0,0,0.1); padding: 5px; text-align: center; }
-        
+        td { border: 1px solid rgba(255,0,0,0.1); padding: 5px; text-align: center; color: white; }
         .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
         #map { width: 100%; max-width: 900px; height: 450px; border-radius: 15px; border: 2px solid var(--neon-violet); }
     </style>
@@ -151,7 +119,7 @@
     <div id="login-screen">
         <div class="login-card">
             <h1>CRITICAL ACCESS</h1>
-            <input type="password" id="code" placeholder="ENTER RED CODE">
+            <input type="password" id="code" placeholder="ENTER ACCESS CODE">
             <button onclick="unlock()" class="btn-action" style="margin-top: 30px; width: 85%; padding: 18px; font-size: 14px;">AUTHORIZE</button>
         </div>
     </div>
@@ -172,29 +140,28 @@
                 <div class="hub-item top-right" onclick="showTab('plan-tab')"><h3>Schedule</h3></div>
                 <div class="hub-item bottom-left" onclick="showTab('map-tab'); initMap();"><h3>Tracking</h3></div>
                 <div class="hub-item bottom-right" onclick="showTab('cia-tab')"><h3>CIA Maps</h3></div>
-                <div class="center-hole"></div>
             </div>
         </div>
 
         <div id="interpol-tab" class="tab-content">
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:8px; width:100%; max-width:900px; background:rgba(30,0,0,0.5); padding:15px; border-radius:10px; border: 1px solid var(--neon-violet); margin-bottom:20px;">
-                <input type="text" id="f-name" placeholder="Name">
-                <input type="text" id="f-forename" placeholder="Forename">
-                <button onclick="fetchNotices()" class="btn-action">SCAN</button>
+            <div class="gateway-card">
+                <h1 style="color:var(--neon-cyan); margin-bottom:15px;">INTERPOL DATABASE</h1>
+                <p style="color:#ccc; margin-bottom:30px;">Redirection vers le registre officiel des notices rouges d'Interpol.</p>
+                <button onclick="window.open('https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices', '_blank')" class="btn-action" style="width:100%; padding:20px;">OUVRIR LE PORTAIL INTERPOL</button>
             </div>
-            <div id="notices-grid"></div>
         </div>
 
         <div id="cia-tab" class="tab-content">
-            <div style="background:rgba(0,0,0,0.8); padding:50px; border-radius:20px; border:2px solid var(--neon-violet); text-align:center; max-width:500px; margin-top:50px;">
-                <h1 style="color:var(--neon-violet); margin-bottom:20px;">CIA GATEWAY</h1>
-                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%; padding:20px;">ACCESS DATABASE</button>
+            <div class="gateway-card">
+                <h1 style="color:var(--neon-cyan); margin-bottom:15px;">CIA RESOURCES</h1>
+                <p style="color:#ccc; margin-bottom:30px;">Accès externe à la cartographie mondiale de la CIA.</p>
+                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%; padding:20px;">OUVRIR LE PORTAIL CIA</button>
             </div>
         </div>
 
         <div id="plan-tab" class="tab-content">
             <div style="overflow-x:auto; width:100%; max-width:1000px;"><table class="schedule-table"><thead><tr><th>TIME</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th><th>SUN</th></tr></thead><tbody id="table-rows"></tbody></table></div>
-            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">SAVE</button>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">SAVE DATABASE</button>
         </div>
 
         <div id="map-tab" class="tab-content">
@@ -203,7 +170,14 @@
         </div>
 
         <div id="ai-tab" class="tab-content">
-             <div style="width:100%; max-width:500px; background:rgba(0,0,0,0.8); padding:20px; border-radius:15px; border:1px solid var(--neon-violet);"><input type="password" id="api-key" placeholder="Key"><div id="messages" style="height:180px; overflow-y:auto; margin-bottom:10px;"></div><div style="display:flex; gap:10px;"><input type="text" id="user-input" style="flex:1;"><button onclick="askAI()" class="btn-action">OK</button></div></div>
+             <div id="ai-container">
+                <h2 style="color:var(--neon-cyan); margin-top:0;">AI UNIT 01</h2>
+                <div id="messages"></div>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="user-input" placeholder="Enter command...">
+                    <button onclick="askAI()" class="btn-action">SEND</button>
+                </div>
+             </div>
         </div>
     </div>
 
@@ -223,6 +197,7 @@
 
     function showTab(id) {
         document.getElementById('video-container').style.display = 'none';
+        document.getElementById('video-bg').pause();
         document.getElementById('hub-menu').style.display = 'none';
         document.getElementById('top-nav').style.display = 'flex';
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -239,7 +214,7 @@
         for (let d = 1; d <= 7; d++) { r += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
         rowsBody.innerHTML += r + `</tr>`;
     }
-    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("SAVED"); }
+    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("ENCRYPTED"); }
     function loadSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { const cell = document.getElementById(`cell-${h}-${d}`); cell.innerText = localStorage.getItem(`plan-${h}-${d}`) || ""; } } }
     function initMap() { if (mapStarted) return; myMap = L.map('map').setView([48.85, 2.35], 4); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); mapStarted = true; }
     function locateGPS() { navigator.geolocation.getCurrentPosition((pos) => { L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(myMap).bindPopup("YOU").openPopup(); myMap.setView([pos.coords.latitude, pos.coords.longitude], 15); }); }
