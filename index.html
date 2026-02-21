@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v3.9 Compact</title>
+    <title>YourSpace - Global Cyber Hub v4.0</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -19,16 +19,17 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; font-size: 11px; }
 
-        /* --- LOGIN SCREEN --- */
+        /* --- LOGIN SCREEN (SLIGHTLY ENLARGED) --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 5000; }
-        .login-card { background: var(--glass); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 20px var(--neon-violet); }
-        input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); color: white; padding: 6px; border-radius: 5px; outline: none; font-size: 11px; }
+        .login-card { background: var(--glass); padding: 50px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 30px var(--neon-violet); width: 100%; max-width: 400px; }
+        .login-card h1 { font-size: 28px; margin-bottom: 25px; letter-spacing: 2px; }
+        input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; outline: none; font-size: 12px; }
 
-        /* --- NAVIGATION (COMPACT) --- */
+        /* --- NAVIGATION (ENLARGED) --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        nav { display: flex; justify-content: center; gap: 8px; padding: 12px; background: rgba(0,0,0,0.5); border-bottom: 2px solid var(--neon-violet); flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 6px 14px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 10px; font-weight: bold; }
-        .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 10px var(--neon-cyan); }
+        nav { display: flex; justify-content: center; gap: 12px; padding: 20px; background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--neon-violet); flex-wrap: wrap; }
+        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 10px 22px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
+        .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
 
         .tab-content { display: none; flex: 1; padding: 15px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
@@ -40,6 +41,7 @@
         #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; width: 100%; max-width: 1050px; }
         .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
         .notice-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; border: 1px solid #333; }
+        .notice-card h4 { font-size: 11px; margin: 3px 0; }
 
         /* --- MODAL --- */
         #detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 6000; align-items: center; justify-content: center; padding: 15px; }
@@ -54,7 +56,7 @@
         td { border: 1px solid rgba(255,255,255,0.1); padding: 4px; text-align: center; height: 22px; }
         .time-col { color: var(--neon-cyan); font-weight: bold; width: 60px; }
 
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 10px; }
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 11px; }
         #map { width: 100%; max-width: 900px; height: 400px; border-radius: 12px; border: 1px solid var(--neon-violet); }
         .loader { color: var(--neon-cyan); font-family: monospace; padding: 10px; font-size: 11px; }
     </style>
@@ -67,17 +69,17 @@
 
     <div id="login-screen">
         <div class="login-card">
-            <h1 style="color: var(--neon-cyan); font-size: 22px;">CYBER HUB ACCESS</h1>
-            <input type="password" id="code" placeholder="PIN CODE">
-            <button onclick="unlock()" class="btn-action" style="margin-top: 15px; width: 100%;">IDENTIFY</button>
+            <h1 style="color: var(--neon-cyan);">CYBER HUB ACCESS</h1>
+            <input type="password" id="code" placeholder="PIN CODE" style="width: 80%;">
+            <button onclick="unlock()" class="btn-action" style="margin-top: 25px; width: 85%; padding: 15px;">IDENTIFY</button>
         </div>
     </div>
 
     <div id="main-app">
         <nav>
-            <button class="nav-btn active" onclick="showTab('interpol-tab')">Interpol</button>
-            <button class="nav-btn" onclick="showTab('plan-tab')">Schedule</button>
-            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Tracking</button>
+            <button class="nav-btn active" onclick="showTab('interpol-tab')">Interpol Database</button>
+            <button class="nav-btn" onclick="showTab('plan-tab')">Academic Schedule</button>
+            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Tracking Unit</button>
             <button class="nav-btn" onclick="showTab('ai-tab')">AI Assistant</button>
         </nav>
 
@@ -96,7 +98,7 @@
                 </div>
                 <div class="filter-group"><label>Age Min</label><input type="number" id="f-age-min" value="0"></div>
                 <div class="filter-group"><label>Age Max</label><input type="number" id="f-age-max" value="120"></div>
-                <button onclick="fetchNotices()" class="btn-action" style="margin-top:auto;">QUERY</button>
+                <button onclick="fetchNotices()" class="btn-action" style="margin-top:auto;">QUERY API</button>
             </div>
             <div id="notices-loader" class="loader">> STANDBY: SECURE TUNNEL...</div>
             <div id="notices-grid"></div>
@@ -110,7 +112,7 @@
                     <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">SAVE DATA</button>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">SAVE ENCRYPTED DATA</button>
         </div>
 
         <div id="map-tab" class="tab-content">
@@ -135,7 +137,6 @@
     let myMap; let mapStarted = false; let currentPage = 1;
     const defaultCourses = { "8-1": "MATHS", "10-1": "PHYSICS", "13-1": "SI", "8-6": "DS" };
 
-    // --- SECURE FETCH (FALLBACK) ---
     async function secureFetch(url) {
         const proxyList = [
             (u) => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
@@ -200,7 +201,6 @@
         } catch(e) { area.innerHTML = "> ERROR: ENCRYPTION TOO STRONG."; }
     }
 
-    // --- APP CORE ---
     function unlock() { if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") { document.getElementById('login-screen').style.display = 'none'; document.getElementById('main-app').style.display = 'flex'; loadSchedule(); fetchNotices(); } }
     function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
