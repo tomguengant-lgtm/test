@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Cyber Hub</title>
+    <title>YourSpace - Cyber Hub Ultimate</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -19,36 +19,38 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
 
-        /* --- ÉCRAN DE CONNEXION --- */
+        /* --- LOGIN --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
         .login-card { background: var(--glass); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 20px var(--neon-violet); }
-        input[type="password"], input[type="text"], input[type="email"], textarea { background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; outline: none; font-family: inherit; }
+        input, select, textarea { background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; outline: none; font-family: inherit; }
 
-        /* --- STRUCTURE DE L'APPLICATION --- */
+        /* --- APP STRUCTURE --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        nav { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 8px 12px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 9px; }
+        nav { display: flex; justify-content: center; gap: 8px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); flex-wrap: wrap; }
+        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 6px 12px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 8px; }
         .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
 
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
-        /* --- IA --- */
-        .chat-container { width: 100%; max-width: 500px; background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        /* --- INTERPOL SECTION --- */
+        .filter-box { background: var(--glass); padding: 15px; border-radius: 15px; border: 1px solid var(--neon-violet); width: 100%; max-width: 900px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .filter-group { display: flex; flex-direction: column; gap: 4px; }
+        .filter-group label { font-size: 9px; color: var(--neon-cyan); text-transform: uppercase; }
+        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; }
+        .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; text-align: center; transition: 0.3s; }
+        .notice-card:hover { border-color: var(--neon-violet); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(180, 73, 204, 0.3); }
+        .notice-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; margin-bottom: 10px; background: #000; }
 
-        /* --- PLANNING --- */
+        /* --- PLANNING & MAP --- */
         .schedule-container { width: 100%; max-width: 1000px; overflow-x: auto; background: var(--glass); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
         .schedule-table { width: 100%; border-collapse: collapse; min-width: 800px; table-layout: fixed; }
-        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 11px; position: sticky; top: 0; }
+        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 11px; }
         .time-col { background: rgba(0,0,0,0.4); font-weight: bold; color: var(--neon-cyan); width: 100px; text-align: center; font-size: 11px; }
-        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 40px; font-size: 10px; outline: none; text-align: center; }
+        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 40px; font-size: 10px; text-align: center; }
+        #map { width: 100%; max-width: 850px; height: 400px; border-radius: 15px; border: 1px solid var(--neon-violet); }
 
-        /* --- CARTE & TRAÇAGE --- */
-        #map { width: 100%; max-width: 850px; height: 400px; border-radius: 15px; border: 1px solid var(--neon-violet); box-shadow: 0 0 15px var(--neon-violet); }
-        .custom-div-icon { background: none; border: none; }
-
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
     </style>
 </head>
 <body>
@@ -57,7 +59,7 @@
         <div class="login-card">
             <h2 style="color: var(--neon-cyan)">CYBER HUB</h2>
             <input type="password" id="code" placeholder="PIN CODE">
-            <button onclick="unlock()" class="btn-action">IDENTIFICATION</button>
+            <button onclick="unlock()" class="btn-action" style="margin-top:15px">IDENTIFICATION</button>
         </div>
     </div>
 
@@ -67,15 +69,16 @@
             <button class="nav-btn" onclick="showTab('plan-tab')">Planning CPGE</button>
             <button class="nav-btn" onclick="showTab('contact-tab')">Widget Mail</button>
             <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Unité Traçage</button>
+            <button class="nav-btn" onclick="showTab('interpol-tab')">Interpol Database</button>
         </nav>
 
         <div id="ai-tab" class="tab-content active">
-             <div class="chat-container">
+             <div style="width:100%; max-width:500px; background:var(--glass); padding:20px; border-radius:20px; border: 1px solid rgba(255,255,255,0.1);">
                 <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:92%; margin-bottom:15px;">
-                <div id="messages"></div>
+                <div id="messages" style="height:250px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="user-input" placeholder="Message..." style="flex:1;">
-                    <button onclick="askAI()" class="btn-action" style="margin:0;">OK</button>
+                    <button onclick="askAI()" class="btn-action">OK</button>
                 </div>
              </div>
         </div>
@@ -87,7 +90,7 @@
                     <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action">SAUVEGARDER</button>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:20px">SAUVEGARDER</button>
         </div>
 
         <div id="contact-tab" class="tab-content">
@@ -103,31 +106,36 @@
 
         <div id="map-tab" class="tab-content">
             <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:400px; margin-bottom:15px;">
-                <div style="display:flex; gap:5px;">
-                    <input type="text" id="input-ip" placeholder="IP Cible (ex: 8.8.8.8)" style="flex:1;">
-                    <button onclick="trackCustomIP()" class="btn-action" style="margin:0; font-size:10px;">TRACK IP</button>
-                </div>
-                <div style="display:flex; gap:5px;">
-                    <button onclick="locateIP()" class="btn-action" style="flex:1; margin:0; font-size:9px;">MA POSITION IP</button>
-                    <button onclick="locateGPS()" class="btn-action" style="flex:1; margin:0; font-size:9px; background:#00ffcc; color:#000;">MON GPS PRÉCIS</button>
-                </div>
+                <div style="display:flex; gap:5px;"><input type="text" id="input-ip" placeholder="IP Cible"><button onclick="trackCustomIP()" class="btn-action">TRACK</button></div>
+                <div style="display:flex; gap:5px;"><button onclick="locateIP()" class="btn-action" style="flex:1;">MON IP</button><button onclick="locateGPS()" class="btn-action" style="flex:1; background:#00ffcc; color:#000;">MON GPS</button></div>
             </div>
             <div id="map"></div>
+        </div>
+
+        <div id="interpol-tab" class="tab-content">
+            <h3 style="color:var(--neon-violet)">NOTICES ROUGES - SYSTÈME DE RECHERCHE</h3>
+            
+            <div class="filter-box">
+                <div class="filter-group"><label>Nom</label><input type="text" id="f-name"></div>
+                <div class="filter-group"><label>Prénom</label><input type="text" id="f-forename"></div>
+                <div class="filter-group"><label>Nationalité</label><input type="text" id="f-nat" placeholder="Ex: FR"></div>
+                <div class="filter-group"><label>Sexe</label><select id="f-gender"><option value="">Tous</option><option value="M">M</option><option value="F">F</option></select></div>
+                <div class="filter-group"><label>Âge Min</label><input type="number" id="f-age-min" value="0"></div>
+                <div class="filter-group"><label>Âge Max</label><input type="number" id="f-age-max" value="120"></div>
+                <button onclick="fetchNotices()" class="btn-action" style="grid-column: span 2; margin-top:10px">LANCER LA RECHERCHE</button>
+            </div>
+
+            <p id="notices-count" style="font-size:11px; color:var(--neon-cyan); margin-bottom:15px;"></p>
+            <div id="notices-grid"></div>
+            <button id="load-more" onclick="nextPage()" class="btn-action" style="display:none; margin-top:20px">CHARGER PLUS DE NOTICES</button>
         </div>
     </div>
 
 <script>
-    let myMap; let mapStarted = false;
-    const defaultCourses = {
-        "8-1": "MATHÉMATIQUES (Gillet F. L110)", "9-1": "MATHÉMATIQUES (Gillet F. L110)", "10-1": "PC (V102)", "11-1": "PC (V102)", "12-1": "PAUSE", "13-1": "SI", "14-1": "SI", "15-1": "SI", "16-1": "SI",
-        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PC (V102)", "12-2": "PAUSE", "15-2": "ANGLAIS", "16-2": "ANGLAIS",
-        "8-3": "PC (V102)", "9-3": "PC (V102)", "10-3": "SI", "11-3": "SI", "12-3": "PAUSE", "13-3": "SI", "14-3": "SI", "15-3": "SI", "16-3": "SI",
-        "8-4": "SI (L110)", "9-4": "SI (L110)", "10-4": "MATHS (L110)", "11-4": "MATHS (L110)", "12-4": "PAUSE", "13-4": "FR-PHILO", "14-4": "FR-PHILO", "15-4": "PC (V103)", "16-4": "PC (V103)",
-        "8-5": "PC (V203)", "9-5": "PC (V203)", "10-5": "MATHS (L110)", "11-5": "MATHS (L110)", "12-5": "PAUSE", "13-5": "TIPE", "14-5": "TIPE", "15-5": "INFO", "16-5": "INFO",
-        "8-6": "DS", "9-6": "DS", "10-6": "DS", "11-6": "DS"
-    };
+    let myMap; let mapStarted = false; let currentPage = 1;
+    const defaultCourses = { "8-1": "MATHÉMATIQUES (Gillet F. L110)", "9-1": "MATHÉMATIQUES (Gillet F. L110)", "10-1": "PC (V102)", "11-1": "PC (V102)", "12-1": "PAUSE", "13-1": "SI", "14-1": "SI", "15-1": "SI", "16-1": "SI", "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PC (V102)", "12-2": "PAUSE", "15-2": "ANGLAIS", "16-2": "ANGLAIS", "8-3": "PC (V102)", "9-3": "PC (V102)", "10-3": "SI", "11-3": "SI", "12-3": "PAUSE", "13-3": "SI", "14-3": "SI", "15-3": "SI", "16-3": "SI", "8-4": "SI (L110)", "9-4": "SI (L110)", "10-4": "MATHS (L110)", "11-4": "MATHS (L110)", "12-4": "PAUSE", "13-4": "FR-PHILO", "14-4": "FR-PHILO", "15-4": "PC (V103)", "16-4": "PC (V103)", "8-5": "PC (V203)", "9-5": "PC (V203)", "10-5": "MATHS (L110)", "11-5": "MATHS (L110)", "12-5": "PAUSE", "13-5": "TIPE", "14-5": "TIPE", "15-5": "INFO", "16-5": "INFO", "8-6": "DS" };
 
-    // --- GÉNÉRATION ---
+    // --- GÉNÉRATION PLANNING ---
     const tableBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
         let r = `<tr><td class="time-col">${h}h - ${h+1}h</td>`;
@@ -135,7 +143,47 @@
         tableBody.innerHTML += r + `</tr>`;
     }
 
-    // --- FONCTIONS ---
+    // --- INTERPOL LOGIC ---
+    async function fetchNotices(reset = true) {
+        if(reset) { currentPage = 1; document.getElementById('notices-grid').innerHTML = ""; }
+        const grid = document.getElementById('notices-grid');
+        const count = document.getElementById('notices-count');
+        const loadMore = document.getElementById('load-more');
+        
+        let url = `https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&page=${currentPage}`;
+        const name = document.getElementById('f-name').value;
+        const forename = document.getElementById('f-forename').value;
+        const nat = document.getElementById('f-nat').value;
+        const gender = document.getElementById('f-gender').value;
+        const ageMin = document.getElementById('f-age-min').value;
+        const ageMax = document.getElementById('f-age-max').value;
+
+        if(name) url += `&name=${name}`;
+        if(forename) url += `&forename=${forename}`;
+        if(nat) url += `&nationality=${nat}`;
+        if(gender) url += `&gender=${gender}`;
+        if(ageMin) url += `&ageMin=${ageMin}`;
+        if(ageMax) url += `&ageMax=${ageMax}`;
+
+        try {
+            count.innerText = "Recherche dans la base de données...";
+            const resp = await fetch(url);
+            const data = await resp.json();
+            count.innerText = `${data.total} individus identifiés. Page ${currentPage}`;
+            loadMore.style.display = data.total > 20 ? "block" : "none";
+
+            data._embedded.notices.forEach(n => {
+                const card = document.createElement('div');
+                card.className = 'notice-card';
+                const img = n._links.thumbnail ? n._links.thumbnail.href : 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png';
+                card.innerHTML = `<img src="${img}"><h4>${n.name}</h4><p>${n.forename || ''}</p><p style="color:var(--neon-cyan)">${n.nationalities ? n.nationalities[0] : 'N/A'}</p>`;
+                grid.appendChild(card);
+            });
+        } catch(e) { count.innerText = "Erreur de connexion sécurisée (Interpol)."; }
+    }
+    function nextPage() { currentPage++; fetchNotices(false); }
+
+    // --- CORE HUB ---
     function unlock() {
         if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
             document.getElementById('login-screen').style.display = 'none';
@@ -143,14 +191,12 @@
             loadSchedule();
         } else { alert("Code incorrect"); }
     }
-
     function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
     }
-
     async function askAI() {
         const key = document.getElementById('api-key').value;
         const input = document.getElementById('user-input');
@@ -170,7 +216,51 @@
             box.scrollTop = box.scrollHeight;
         } catch(e) { alert("Erreur API"); }
     }
-
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
-            for (
+            for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); }
+        }
+        alert("Planning enregistré !");
+    }
+    function loadSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                const cell = document.getElementById(`cell-${h}-${d}`);
+                const saved = localStorage.getItem(`plan-${h}-${d}`);
+                const def = defaultCourses[`${h}-${d}`];
+                cell.innerText = saved !== null ? saved : (def || "");
+                cell.style.color = (saved === null && def) ? "var(--neon-cyan)" : "white";
+            }
+        }
+    }
+    function initMap() {
+        if (mapStarted) return;
+        myMap = L.map('map').setView([46.6, 2.2], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap);
+        setTimeout(() => { document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)"; }, 100);
+        mapStarted = true;
+    }
+    async function locateIP() {
+        const resp = await fetch('https://ipapi.co/json/');
+        const data = await resp.json();
+        placeMarker(data.latitude, data.longitude, "Toi (IP)", "#b449cc");
+    }
+    function locateGPS() {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            placeMarker(pos.coords.latitude, pos.coords.longitude, "Toi (GPS)", "#00ffcc");
+        }, () => alert("GPS Refusé"));
+    }
+    async function trackCustomIP() {
+        const ip = document.getElementById('input-ip').value;
+        const resp = await fetch(`https://ipapi.co/${ip}/json/`);
+        const data = await resp.json();
+        placeMarker(data.latitude, data.longitude, `CIBLE : ${data.ip}`, "#ff007f");
+    }
+    function placeMarker(lat, lng, text, color) {
+        const icon = L.divIcon({ className: 'custom-div-icon', html: `<div style='background-color:${color}; width:15px; height:15px; border-radius:50%; box-shadow:0 0 10px ${color}; border:2px solid white;'></div>` });
+        L.marker([lat, lng], {icon: icon}).addTo(myMap).bindPopup(text).openPopup();
+        myMap.setView([lat, lng], 13);
+    }
+</script>
+</body>
+</html>
