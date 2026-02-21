@@ -13,134 +13,127 @@
             --glass: rgba(255, 255, 255, 0.05);
         }
 
-        body {
-            margin: 0; font-family: 'Segoe UI', sans-serif;
-            background: var(--bg-gradient); color: white;
-            height: 100vh; overflow: hidden;
-        }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
 
-        /* --- ECRAN DE VERROUILLAGE --- */
-        #login-screen {
-            position: fixed; inset: 0; background: var(--bg-dark);
-            display: flex; align-items: center; justify-content: center; z-index: 1000;
-        }
-        .login-card {
-            background: var(--glass); padding: 40px; border-radius: 20px;
-            backdrop-filter: blur(10px); border: 1px solid var(--neon-violet);
-            text-align: center; box-shadow: 0 0 20px var(--neon-violet);
-        }
-        input[type="password"], input[type="text"] {
-            background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan);
-            color: white; padding: 10px; border-radius: 5px; text-align: center; outline: none;
-        }
+        /* --- LOGIN --- */
+        #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .login-card { background: var(--glass); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 20px var(--neon-violet); }
+        input[type="password"] { background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; text-align: center; outline: none; }
 
-        /* --- MISE EN PAGE PRINCIPALE --- */
+        /* --- APP --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-
-        nav {
-            display: flex; justify-content: center; gap: 20px; padding: 15px;
-            background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass);
-        }
-        .nav-btn {
-            background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; font-size: 11px;
-        }
+        nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); }
+        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 11px; }
         .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
 
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
-        /* --- IA --- */
-        #ai-container { width: 100%; max-width: 500px; background: var(--glass); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        #messages { height: 300px; overflow-y: auto; margin-bottom: 20px; }
-        .msg { margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; max-width: 80%; }
-        .user { background: var(--neon-violet); align-self: flex-end; margin-left: auto; }
-        .ai { background: rgba(255,255,255,0.1); border-left: 3px solid var(--neon-cyan); }
-
-        /* --- PLANNING HORAIRE --- */
-        .schedule-container { width: 100%; max-width: 900px; overflow-x: auto; background: var(--glass); border-radius: 15px; }
-        .schedule-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 12px; position: sticky; top: 0; }
-        .time-col { background: rgba(0,0,0,0.3); font-weight: bold; color: var(--neon-cyan); width: 80px; text-align: center; font-size: 11px; }
-        td { border: 1px solid rgba(255,255,255,0.05); padding: 5px; height: 35px; font-size: 12px; outline: none; min-width: 80px; }
+        /* --- PLANNING --- */
+        .schedule-container { width: 100%; max-width: 1000px; overflow-x: auto; background: var(--glass); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 800px; table-layout: fixed; }
+        th { background: var(--neon-violet); color: white; padding: 12px; font-size: 12px; position: sticky; top: 0; }
+        .time-col { background: rgba(0,0,0,0.4); font-weight: bold; color: var(--neon-cyan); width: 100px; text-align: center; font-size: 11px; }
+        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 45px; font-size: 11px; outline: none; word-wrap: break-word; line-height: 1.2; }
         td:focus { background: rgba(180, 73, 204, 0.2); border: 1px solid var(--neon-violet); }
 
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="color: var(--neon-cyan)">ACCÈS HUB</h2>
-            <input type="password" id="code" placeholder="CODE D'ACCÈS">
+            <h2 style="color: var(--neon-cyan)">CYBER HUB ACCÈS</h2>
+            <input type="password" id="code" placeholder="CODE PIN">
             <button onclick="unlock()" class="btn-action">ENTRER</button>
-            <p id="error-msg" style="color: #ff4757; display: none; font-size: 12px; margin-top: 10px;">Code incorrect !</p>
         </div>
     </div>
 
     <div id="main-app">
         <nav>
             <button class="nav-btn active" onclick="showTab('ai-tab')">IA Vocale</button>
-            <button class="nav-btn" onclick="showTab('plan-tab')">Emploi du temps</button>
+            <button class="nav-btn" onclick="showTab('plan-tab')">Planning Scolaire</button>
         </nav>
 
         <div id="ai-tab" class="tab-content active">
-            <div id="ai-container">
-                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:90%; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid #444; color:white; padding:5px;">
-                <div id="messages"></div>
+             <div id="ai-container" style="width:100%; max-width:500px; background:var(--glass); padding:20px; border-radius:20px;">
+                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:95%; margin-bottom:15px; background:rgba(0,0,0,0.5); border:1px solid #555; color:white; padding:8px;">
+                <div id="messages" style="height:300px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="user-input" placeholder="Message..." style="flex:1; background:rgba(0,0,0,0.3); border:1px solid #444; color:white; padding:10px; border-radius:5px;">
-                    <button onclick="startListening()" style="background:var(--neon-violet); border:none; border-radius:50%; width:40px; cursor:pointer;">🎤</button>
+                    <input type="text" id="user-input" placeholder="Message..." style="flex:1; background:rgba(0,0,0,0.5); border:1px solid #555; color:white; padding:10px;">
+                    <button onclick="startListening()" style="background:var(--neon-violet); border:none; border-radius:50%; width:45px; cursor:pointer;">🎤</button>
                     <button onclick="askAI()" class="btn-action" style="margin:0;">OK</button>
                 </div>
-            </div>
+             </div>
         </div>
 
         <div id="plan-tab" class="tab-content">
+            <h3 style="color:var(--neon-cyan); margin-top:0;">EMPLOI DU TEMPS - CPGE</h3>
             <div class="schedule-container">
-                <table class="schedule-table" id="schedule-body">
+                <table class="schedule-table">
                     <thead>
                         <tr>
-                            <th style="background:#000">Heure</th>
-                            <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
+                            <th style="width:80px">HEURE</th>
+                            <th>LUNDI</th><th>MARDI</th><th>MERCREDI</th><th>JEUDI</th><th>VENDREDI</th><th>SAM</th><th>DIM</th>
                         </tr>
                     </thead>
                     <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action">Sauvegarder</button>
+            <button onclick="saveSchedule()" class="btn-action">ENREGISTRER MES MODIFS</button>
+            <p style="font-size:10px; color:#888; margin-top:10px;">Note : Le planning officiel revient chaque dimanche à minuit.</p>
         </div>
     </div>
 
 <script>
+    // --- 1. TES COURS OFFICIELS (Issus de ton image) ---
+    const defaultCourses = {
+        // Lundi (1)
+        "8-1": "MATHÉMATIQUES (Gillet F. L110)", "9-1": "MATHÉMATIQUES (Gillet F. L110)",
+        "10-1": "PHYSIQUE-CHIMIE (Gilson J. V102)", "11-1": "PHYSIQUE-CHIMIE (Gilson J. V102)",
+        "12-1": "PAUSE MERIDIENNE",
+        "13-1": "SI (Benardeau / Bonel)", "14-1": "SI (Benardeau / Bonel)", "15-1": "SI (Benardeau / Bonel)", "16-1": "SI (Benardeau / Bonel)",
+        // Mardi (2)
+        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)",
+        "11-2": "PHYSIQUE (V102)",
+        "15-2": "ANGLAIS LV1 (L110)", "16-2": "ANGLAIS LV1 (L110)",
+        // Mercredi (3)
+        "8-3": "PHYSIQUE (V102)", "9-3": "PHYSIQUE (V102)",
+        "10-3": "SI (Bonel)", "11-3": "SI (Bonel)",
+        "13-3": "SI (Benardeau)",
+        "15-3": "SI (Benardeau)", "16-3": "SI (Benardeau)",
+        // Jeudi (4)
+        "8-4": "SI (L110)", "9-4": "SI (L110)",
+        "10-4": "MATHS (L110)", "11-4": "MATHS (L110)",
+        "12-4": "PAUSE MERIDIENNE",
+        "13-4": "FRANCAIS-PHILO", "14-4": "FRANCAIS-PHILO",
+        "15-4": "PHYSIQUE (V103)", "16-4": "PHYSIQUE (V103)",
+        // Vendredi (5)
+        "8-5": "PHYSIQUE (V203)", "9-5": "PHYSIQUE (V203)",
+        "10-5": "MATHS (L110)", "11-5": "MATHS (L110)",
+        "15-5": "INFORMATIQUE (L110)", "16-5": "INFORMATIQUE (L110)"
+    };
+
     // --- GÉNÉRATION DU TABLEAU ---
-    const tableRows = document.getElementById('table-rows');
+    const tableBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
-        let row = `<tr><td class="time-col">${h}h - ${h+1}h</td>`;
+        let row = `<tr><td class="time-col">${h}h- ${h+1}h</td>`;
         for (let d = 1; d <= 7; d++) {
             row += `<td contenteditable="true" id="cell-${h}-${d}"></td>`;
         }
         row += `</tr>`;
-        tableRows.innerHTML += row;
+        tableBody.innerHTML += row;
     }
 
-    // --- LOGIQUE DE DÉVERROUILLAGE (Nouveau code : tom1234) ---
+    // --- SÉCURITÉ (tom1234) ---
     function unlock() {
-        const input = document.getElementById('code').value;
-        const encodedInput = btoa(input);
-        const secretCode = "dG9tMTIzNA=="; // Correspond à tom1234
-
-        if(encodedInput === secretCode) {
+        if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             checkAutoReset();
             loadSchedule();
-        } else {
-            document.getElementById('error-msg').style.display = 'block';
-            document.getElementById('code').value = "";
-        }
+        } else { alert("Code incorrect"); }
     }
 
     function showTab(id) {
@@ -150,66 +143,7 @@
         event.target.classList.add('active');
     }
 
-    // --- IA VOCALE ---
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'fr-FR';
-    function startListening() { recognition.start(); }
-    recognition.onresult = (e) => { document.getElementById('user-input').value = e.results[0][0].transcript; askAI(); };
-
-    async function askAI() {
-        const key = document.getElementById('api-key').value;
-        const msg = document.getElementById('user-input').value;
-        if(!key || !msg) return;
-        const box = document.getElementById('messages');
-        box.innerHTML += `<div class="msg user">${msg}</div>`;
-        try {
-            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-                body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: msg}] })
-            });
-            const data = await resp.json();
-            const reply = data.choices[0].message.content;
-            box.innerHTML += `<div class="msg ai"><b>IA:</b> ${reply}</div>`;
-            box.scrollTop = box.scrollHeight;
-            const ut = new SpeechSynthesisUtterance(reply); ut.lang = 'fr-FR'; window.speechSynthesis.speak(ut);
-        } catch(e) { alert("Erreur API"); }
-    }
-
-    // --- SAUVEGARDE PLANNING ---
+    // --- SAUVEGARDE & CHARGEMENT ---
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <= 7; d++) {
-                localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText);
-            }
-        }
-        localStorage.setItem('last_week_num', getWeekNumber(new Date()));
-        alert("Planning enregistré !");
-    }
-
-    function loadSchedule() {
-        for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <= 7; d++) {
-                document.getElementById(`cell-${h}-${d}`).innerText = localStorage.getItem(`plan-${h}-${d}`) || "";
-            }
-        }
-    }
-
-    function checkAutoReset() {
-        const currentWeek = getWeekNumber(new Date());
-        const lastWeek = localStorage.getItem('last_week_num');
-        if (lastWeek && currentWeek !== parseInt(lastWeek)) {
-            localStorage.clear();
-            loadSchedule();
-        }
-    }
-
-    function getWeekNumber(d) {
-        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-        return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-    }
-</script>
-</body>
-</html>
+            for (let d = 1; d <=
