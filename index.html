@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Cyber Hub Interpol Pro</title>
+    <title>YourSpace - Global Cyber Hub</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -17,51 +17,55 @@
             --glass: rgba(255, 255, 255, 0.05);
         }
 
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
 
-        /* --- LOGIN --- */
-        #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .login-card { background: var(--glass); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 20px var(--neon-violet); }
-        input, select { background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; outline: none; }
+        /* --- LOGIN SCREEN --- */
+        #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 3000; }
+        .login-card { background: var(--glass); padding: 50px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 30px var(--neon-violet); }
+        input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; }
 
-        /* --- STRUCTURE --- */
+        /* --- NAVIGATION (ENLARGED) --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        nav { display: flex; justify-content: center; gap: 8px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 6px 12px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 8px; }
-        .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
+        nav { display: flex; justify-content: center; gap: 15px; padding: 25px; background: rgba(0,0,0,0.5); border-bottom: 1px solid var(--neon-violet); flex-wrap: wrap; }
+        .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 25px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+        .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 20px var(--neon-cyan); }
+        .nav-btn:hover { background: rgba(0, 210, 255, 0.2); }
 
-        .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
+        .tab-content { display: none; flex: 1; padding: 30px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
-        /* --- INTERPOL SECTION --- */
-        .filter-box { background: var(--glass); padding: 15px; border-radius: 15px; border: 1px solid var(--neon-violet); width: 100%; max-width: 900px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; }
-        .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .notice-card:hover { border-color: var(--neon-violet); transform: scale(1.03); }
-        .notice-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; background: #000; }
+        /* --- INTERPOL SEARCH GRID --- */
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid var(--neon-violet); margin-bottom: 25px; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 11px; color: var(--neon-cyan); text-transform: uppercase; font-weight: bold; }
+        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
+        .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .notice-card:hover { border-color: var(--neon-violet); transform: scale(1.05); box-shadow: 0 0 15px var(--neon-violet); }
+        .notice-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
 
-        /* --- MODAL DÉTAILS --- */
-        #detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-violet); border-radius: 15px; width: 100%; max-width: 700px; padding: 25px; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 0 40px rgba(180, 73, 204, 0.5); }
-        .close-modal { position: absolute; top: 15px; right: 20px; color: var(--neon-cyan); font-size: 30px; cursor: pointer; }
-        
-        .fiche-header { display: flex; gap: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
-        .fiche-img { width: 180px; height: 220px; border-radius: 5px; border: 2px solid var(--neon-violet); object-fit: cover; }
-        .section-title { color: var(--neon-violet); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; border-left: 3px solid var(--neon-violet); padding-left: 8px; }
-        .data-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
-        .data-item { font-size: 13px; color: #eee; }
-        .label { color: var(--neon-cyan); font-size: 10px; text-transform: uppercase; display: block; }
-        .charge-box { background: rgba(255,0,0,0.1); border: 1px solid #ff4757; padding: 10px; border-radius: 5px; color: #ff4757; font-size: 12px; line-height: 1.4; margin-top: 10px; }
+        /* --- INTERPOL MODAL --- */
+        #detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 4000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-violet); border-radius: 20px; width: 100%; max-width: 800px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 50px var(--neon-violet); }
+        .close-modal { position: absolute; top: 20px; right: 25px; color: var(--neon-cyan); font-size: 35px; cursor: pointer; }
+        .fiche-header { display: flex; gap: 30px; border-bottom: 1px solid #444; padding-bottom: 20px; margin-bottom: 20px; }
+        .fiche-img-large { width: 220px; height: 280px; border-radius: 10px; border: 2px solid var(--neon-cyan); object-fit: cover; box-shadow: 0 0 15px var(--neon-cyan); }
+        .section-title { color: var(--neon-violet); font-size: 13px; text-transform: uppercase; font-weight: bold; border-left: 4px solid var(--neon-violet); padding-left: 10px; margin: 20px 0 10px; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .data-label { color: var(--neon-cyan); font-size: 10px; text-transform: uppercase; }
+        .data-val { font-size: 15px; font-weight: bold; }
 
-        /* --- PLANNING & MAP --- */
-        .schedule-container { width: 100%; max-width: 1000px; overflow-x: auto; background: var(--glass); border-radius: 15px; }
-        .schedule-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 11px; }
-        td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; text-align: center; font-size: 11px; }
-        #map { width: 100%; max-width: 850px; height: 400px; border-radius: 15px; border: 1px solid var(--neon-violet); }
+        /* --- TRACKING & MAP --- */
+        #map { width: 100%; max-width: 1000px; height: 500px; border-radius: 20px; border: 2px solid var(--neon-violet); box-shadow: 0 0 20px var(--neon-violet); }
+        .tracking-controls { display: flex; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 600px; }
 
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-translate { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 4px 8px; font-size: 9px; border-radius: 3px; cursor: pointer; margin-top: 5px; }
+        /* --- SCHEDULE --- */
+        .schedule-container { width: 100%; max-width: 1100px; overflow-x: auto; background: var(--glass); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        th { background: var(--neon-violet); color: white; padding: 15px; font-size: 13px; text-transform: uppercase; }
+        td { border: 1px solid rgba(255,255,255,0.1); padding: 12px; text-align: center; font-size: 12px; }
+
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--neon-violet); }
     </style>
 </head>
 <body>
@@ -69,77 +73,101 @@
     <div id="detail-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div id="modal-content-area">
-                </div>
+            <div id="modal-content-area"></div>
         </div>
     </div>
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="color: var(--neon-cyan)">INTERPOL HUB</h2>
-            <input type="password" id="code" placeholder="PIN CODE">
-            <button onclick="unlock()" class="btn-action" style="margin-top:15px">ACCÉDER</button>
+            <h1 style="color: var(--neon-cyan); margin-bottom: 30px;">CYBER HUB ACCESS</h1>
+            <input type="password" id="code" placeholder="ENTER ACCESS CODE">
+            <button onclick="unlock()" class="btn-action" style="margin-top: 20px; width: 100%;">AUTHORIZE</button>
         </div>
     </div>
 
     <div id="main-app">
         <nav>
-            <button class="nav-btn active" onclick="showTab('interpol-tab')">Interpol Database</button>
-            <button class="nav-btn" onclick="showTab('plan-tab')">Planning CPGE</button>
-            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Unité Traçage</button>
-            <button class="nav-btn" onclick="showTab('ai-tab')">IA Assistant</button>
+            <button class="nav-btn active" onclick="showTab('ai-tab')">AI Assistant</button>
+            <button class="nav-btn" onclick="showTab('plan-tab')">Academic Schedule</button>
+            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Tracking Unit</button>
+            <button class="nav-btn" onclick="showTab('interpol-tab')">Interpol Database</button>
         </nav>
 
-        <div id="interpol-tab" class="tab-content active">
-            <div class="filter-box">
-                <input type="text" id="f-name" placeholder="Nom">
-                <input type="text" id="f-forename" placeholder="Prénom">
-                <input type="text" id="f-nat" placeholder="Nationalité (ISO)">
-                <button onclick="fetchNotices()" class="btn-action">SCAN</button>
-            </div>
-            <div id="notices-grid"></div>
-            <button id="load-more" onclick="nextPage()" class="btn-action" style="display:none; margin-top:20px">CHARGER PLUS</button>
+        <div id="ai-tab" class="tab-content active">
+             <div style="width:100%; max-width:600px; background:var(--glass); padding:30px; border-radius:25px; border: 1px solid rgba(255,255,255,0.1);">
+                <input type="password" id="api-key" placeholder="OpenAI API Key" style="width:95%; margin-bottom:20px;">
+                <div id="messages" style="height:300px; overflow-y:auto; margin-bottom:20px; display:flex; flex-direction:column; gap:12px;"></div>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="user-input" placeholder="Enter command..." style="flex:1;">
+                    <button onclick="askAI()" class="btn-action">SEND</button>
+                </div>
+             </div>
         </div>
 
         <div id="plan-tab" class="tab-content">
-            <div class="schedule-container"><table class="schedule-table"><thead><tr><th style="width:80px">HEURE</th><th>LUN</th><th>MAR</th><th>MER</th><th>JEU</th><th>VEN</th><th>SAM</th><th>DIM</th></tr></thead><tbody id="table-rows"></tbody></table></div>
-            <button onclick="saveSchedule()" class="btn-action" style="margin-top:20px">SAUVEGARDER</button>
+            <div class="schedule-container">
+                <table class="schedule-table">
+                    <thead><tr><th>TIME</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th><th>SUN</th></tr></thead>
+                    <tbody id="table-rows"></tbody>
+                </table>
+            </div>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:25px">SAVE DATABASE</button>
         </div>
 
         <div id="map-tab" class="tab-content">
-            <div style="display:flex; gap:10px; margin-bottom:15px;"><input type="text" id="input-ip" placeholder="IP Cible"><button onclick="trackCustomIP()" class="btn-action">TRACK</button></div>
+            <div class="tracking-controls">
+                <input type="text" id="input-ip" placeholder="Target IP Address" style="flex:1;">
+                <button onclick="trackCustomIP()" class="btn-action">TRACK IP</button>
+                <button onclick="locateGPS()" class="btn-action" style="background:var(--neon-cyan); color:black;">MY GPS</button>
+            </div>
             <div id="map"></div>
         </div>
 
-        <div id="ai-tab" class="tab-content">
-             <div style="width:100%; max-width:500px; background:var(--glass); padding:20px; border-radius:20px;">
-                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:92%; margin-bottom:15px;">
-                <div id="messages" style="height:250px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
-                <div style="display:flex; gap:10px;"><input type="text" id="user-input" placeholder="Message..." style="flex:1;"><button onclick="askAI()" class="btn-action">OK</button></div>
-             </div>
+        <div id="interpol-tab" class="tab-content">
+            <h2 style="color:var(--neon-violet); text-transform:uppercase; margin-top:0;">Red Notice Intelligence</h2>
+            
+            <div class="filter-grid">
+                <div class="filter-group"><label>Forename</label><input type="text" id="f-forename"></div>
+                <div class="filter-group"><label>Family Name</label><input type="text" id="f-name"></div>
+                <div class="filter-group"><label>Nationality (ISO)</label><input type="text" id="f-nat" placeholder="e.g. FR, US"></div>
+                <div class="filter-group"><label>Gender</label><select id="f-gender"><option value="">ALL</option><option value="M">MALE</option><option value="F">FEMALE</option></select></div>
+                <div class="filter-group"><label>Age Min</label><input type="number" id="f-age-min" value="0"></div>
+                <div class="filter-group"><label>Age Max</label><input type="number" id="f-age-max" value="120"></div>
+                <div class="filter-group"><label>Issuing Country</label><input type="text" id="f-country" placeholder="e.g. RU, CN"></div>
+                <button onclick="fetchNotices()" class="btn-action" style="margin-top:auto;">QUERY API</button>
+            </div>
+
+            <div id="notices-grid"></div>
+            <button id="load-more" onclick="nextPage()" class="btn-action" style="display:none; margin-top:30px">LOAD NEXT PAGE</button>
         </div>
     </div>
 
 <script>
     let myMap; let mapStarted = false; let currentPage = 1;
-    const defaultCourses = { "8-1": "MATHS", "9-1": "MATHS", "10-1": "PC", "11-1": "PC", "13-1": "SI", "14-1": "SI", "15-1": "SI", "16-1": "SI", "8-2": "MATHS", "15-2": "ANGLAIS", "8-3": "PC", "10-3": "SI", "8-4": "SI", "13-4": "FR-PHILO", "8-5": "PC", "13-5": "TIPE", "8-6": "DS" };
 
-    // --- GÉNÉRATION PLANNING ---
+    // --- ACADEMIC DATABASE ---
+    const defaultCourses = { 
+        "8-1": "MATHEMATICS (Gillet F. L110)", "9-1": "MATHEMATICS (Gillet F. L110)", "10-1": "PHYSICS-CHEMISTRY (Gilson J. V102)", "11-1": "PHYSICS-CHEMISTRY (Gilson J. V102)", "12-1": "BREAK", "13-1": "ENGINEERING (Benardeau / Bonel)", "14-1": "ENGINEERING (Benardeau / Bonel)", "15-1": "ENGINEERING (Benardeau / Bonel)", "16-1": "ENGINEERING (Benardeau / Bonel)",
+        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PHYSICS (V102)", "15-2": "ENGLISH LV1", "8-3": "PHYSICS (V102)", "10-3": "ENGINEERING (Bonel)", "13-3": "ENGINEERING (Benardeau)", "8-4": "ENGINEERING (L110)", "10-4": "MATHS (L110)", "13-4": "FRENCH-PHILOSOPHY", "15-4": "PHYSICS (V103)", "8-5": "PHYSICS (V203)", "10-5": "MATHS (L110)", "13-5": "TIPE", "8-6": "WEEKLY EXAM (DS)"
+    };
+
     const tableBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
-        let r = `<tr><td style="color:var(--neon-cyan)">${h}h - ${h+1}h</td>`;
+        let r = `<tr><td style="color:var(--neon-cyan); font-weight:bold;">${h}:00 - ${h+1}:00</td>`;
         for (let d = 1; d <= 7; d++) { r += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
         tableBody.innerHTML += r + `</tr>`;
     }
 
-    // --- LOGIQUE INTERPOL (AMÉLIORÉE) ---
+    // --- INTERPOL API LOGIC ---
     async function fetchNotices(reset = true) {
         if(reset) { currentPage = 1; document.getElementById('notices-grid').innerHTML = ""; }
-        const url = `https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&page=${currentPage}&name=${document.getElementById('f-name').value}&forename=${document.getElementById('f-forename').value}&nationality=${document.getElementById('f-nat').value}`;
+        const url = `https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&page=${currentPage}&name=${document.getElementById('f-name').value}&forename=${document.getElementById('f-forename').value}&nationality=${document.getElementById('f-nat').value}&gender=${document.getElementById('f-gender').value}&ageMin=${document.getElementById('f-age-min').value}&ageMax=${document.getElementById('f-age-max').value}&arrestWarrantCountryId=${document.getElementById('f-country').value}`;
+        
         try {
             const resp = await fetch(url);
             const data = await resp.json();
             document.getElementById('load-more').style.display = data.total > 20 ? "block" : "none";
+            
             data._embedded.notices.forEach(n => {
                 const card = document.createElement('div');
                 card.className = 'notice-card';
@@ -148,94 +176,138 @@
                 card.innerHTML = `<img src="${img}"><h4>${n.name}</h4><p>${n.forename || ''}</p>`;
                 document.getElementById('notices-grid').appendChild(card);
             });
-        } catch(e) { console.error("API Interpol erreur"); }
+        } catch(e) { console.error("Interpol API Error"); }
     }
 
     async function openNoticeDetail(url) {
         const area = document.getElementById('modal-content-area');
         document.getElementById('detail-modal').style.display = "flex";
-        area.innerHTML = "<p>Accès à la fiche sécurisée...</p>";
+        area.innerHTML = "<p>DECRYPTING DOSSIER...</p>";
 
         try {
             const resp = await fetch(url);
             const d = await resp.json();
-            const photo = d._links.images ? d._links.images.href : 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png';
-
+            const photo = d._links.images ? d._links.images.href : (d._links.thumbnail ? d._links.thumbnail.href : 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png');
+            
             area.innerHTML = `
                 <div class="fiche-header">
-                    <img src="${photo}" class="fiche-img">
+                    <img src="${photo}" class="fiche-img-large">
                     <div style="flex:1">
-                        <h1 style="color:var(--neon-violet); margin:0; font-size:22px;">${d.name}</h1>
-                        <h2 style="color:white; margin:0; font-size:18px;">${d.forename || ''}</h2>
-                        <p style="color:#ff4757; font-weight:bold; font-size:11px; margin-top:10px;">NOTICE ROUGE : RECHERCHÉ PAR INTERPOL</p>
-                        <div class="info-label" style="margin-top:15px;">ID ENTITÉ</div>
+                        <h1 style="color:var(--neon-violet); margin:0;">${d.name}</h1>
+                        <h2 style="color:white; margin:0;">${d.forename || ''}</h2>
+                        <p style="color:#ff4757; font-weight:bold; letter-spacing:2px; margin-top:15px;">⚠️ RED NOTICE / WANTED</p>
+                        <div class="data-label" style="margin-top:20px;">ENTITY ID</div>
                         <div style="font-family:monospace; color:var(--neon-cyan)">${d.entity_id}</div>
                     </div>
                 </div>
 
-                <div class="section-title">Identité & Origine</div>
-                <div class="data-row">
-                    <div class="data-item"><span class="label">Date de Naissance</span>${d.date_of_birth || 'N/A'}</div>
-                    <div class="data-item"><span class="label">Lieu de Naissance</span>${d.place_of_birth || 'N/A'}</div>
-                    <div class="data-item"><span class="label">Nationalités</span>${d.nationalities ? d.nationalities.join(', ') : 'N/A'}</div>
-                    <div class="data-item"><span class="label">Langues parlées</span>${d.languages_spoken_ids ? d.languages_spoken_ids.join(', ') : 'N/A'}</div>
+                <div class="section-title">Identity Profile</div>
+                <div class="data-grid">
+                    <div><span class="data-label">Date of Birth</span><div class="data-val">${d.date_of_birth || 'N/A'}</div></div>
+                    <div><span class="data-label">Place of Birth</span><div class="data-val">${d.place_of_birth || 'N/A'}</div></div>
+                    <div><span class="data-label">Nationalities</span><div class="data-val">${d.nationalities ? d.nationalities.join(', ') : 'N/A'}</div></div>
+                    <div><span class="data-label">Languages</span><div class="data-val">${d.languages_spoken_ids ? d.languages_spoken_ids.join(', ') : 'N/A'}</div></div>
                 </div>
 
-                <div class="section-title">Description Physique</div>
-                <div class="data-row">
-                    <div class="data-item"><span class="label">Sexe</span>${d.sex_id === 'M' ? 'Masculin' : 'Féminin'}</div>
-                    <div class="data-item"><span class="label">Taille / Poids</span>${d.height || '?'} cm / ${d.weight || '?'} kg</div>
-                    <div class="data-item"><span class="label">Cheveux / Yeux</span>${d.hairs_id || '?'} / ${d.eyes_colors_id || '?'}</div>
-                    <div class="data-item"><span class="label">Signes Distinctifs</span>${d.distinguishing_marks || 'Aucun répertorié'}</div>
+                <div class="section-title">Physical Description</div>
+                <div class="data-grid">
+                    <div><span class="data-label">Gender</span><div class="data-val">${d.sex_id === 'M' ? 'MALE' : 'FEMALE'}</div></div>
+                    <div><span class="data-label">Height / Weight</span><div class="data-val">${d.height || '?'} cm / ${d.weight || '?'} kg</div></div>
+                    <div><span class="data-label">Hair / Eyes</span><div class="data-val">${d.hairs_id || '?'} / ${d.eyes_colors_id || '?'}</div></div>
+                    <div><span class="data-label">Distinctive Marks</span><div class="data-val">${d.distinguishing_marks || 'None reported'}</div></div>
                 </div>
 
-                <div class="section-title">Motif de la Recherche</div>
-                <div class="charge-box">
-                    <span class="label" style="color:#ff4757">Accusation / Mandat d'arrêt :</span>
-                    <div id="charge-text">${d.arrest_warrants ? d.arrest_warrants[0].charge : 'Mandat en cours'}</div>
-                    <button class="btn-translate" onclick="translateCharge()">TRADUIRE EN FRANÇAIS</button>
-                    <div class="data-item" style="margin-top:10px;"><span class="label">Émis par</span>${d.arrest_warrants ? d.arrest_warrants[0].issuing_country_id : 'N/A'}</div>
+                <div class="section-title" style="color:#ff4757;">Criminal Charges</div>
+                <div style="background:rgba(255,0,0,0.1); border:1px solid #ff4757; padding:15px; border-radius:10px; color:#ff4757; font-size:14px;">
+                    <strong>OFFICIAL CHARGE:</strong><br>
+                    ${d.arrest_warrants ? d.arrest_warrants[0].charge : 'Warrant in progress'}
+                    <div style="margin-top:10px; font-size:11px;"><span class="data-label">Issuing Authority</span>${d.arrest_warrants ? d.arrest_warrants[0].issuing_country_id : 'N/A'}</div>
                 </div>
             `;
-        } catch(e) { area.innerHTML = "Erreur de chargement des données Interpol."; }
-    }
-
-    // --- TRADUCTION IA SIMULÉE (Car Google Translate API est payante) ---
-    function translateCharge() {
-        const text = document.getElementById('charge-text');
-        alert("Traduction en cours via le module IA...");
-        text.style.color = "var(--neon-cyan)";
-        text.innerText = "[TRADUCTION] " + text.innerText;
-        // Ici, on pourrait appeler l'API OpenAI si une clé est présente
+        } catch(e) { area.innerHTML = "Error accessing Interpol database."; }
     }
 
     function closeModal() { document.getElementById('detail-modal').style.display = "none"; }
     function nextPage() { currentPage++; fetchNotices(false); }
 
-    // --- FONCTIONS CORE ---
-    function unlock() { if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") { document.getElementById('login-screen').style.display = 'none'; document.getElementById('main-app').style.display = 'flex'; loadSchedule(); } }
+    // --- SYSTEM CORE ---
+    function unlock() {
+        if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+            loadSchedule();
+        } else { alert("ACCESS DENIED: INCORRECT PIN"); }
+    }
+
     function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
     }
-    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("Enregistré !"); }
-    function loadSchedule() { 
-        for (let h = 8; h < 22; h++) { 
-            for (let d = 1; d <= 7; d++) { 
+
+    async function askAI() {
+        const key = document.getElementById('api-key').value;
+        const input = document.getElementById('user-input');
+        const msg = input.value.trim();
+        if(!key || !msg) return;
+        const box = document.getElementById('messages');
+        box.innerHTML += `<div style="background:var(--neon-violet); padding:10px; border-radius:12px; align-self:flex-end; font-size:13px; max-width:80%; border:1px solid rgba(255,255,255,0.2);">${msg}</div>`;
+        input.value = "";
+        try {
+            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+                body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: msg}] })
+            });
+            const data = await resp.json();
+            box.innerHTML += `<div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:12px; border-left:4px solid var(--neon-cyan); font-size:13px; max-width:85%;"><b>AI CORE:</b> ${data.choices[0].message.content}</div>`;
+            box.scrollTop = box.scrollHeight;
+        } catch(e) { alert("AI OFFLINE: Check API Key"); }
+    }
+
+    function saveSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); }
+        }
+        alert("CENTRAL DATABASE UPDATED");
+    }
+
+    function loadSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
                 const cell = document.getElementById(`cell-${h}-${d}`);
                 const saved = localStorage.getItem(`plan-${h}-${d}`);
                 cell.innerText = saved !== null ? saved : (defaultCourses[`${h}-${d}`] || "");
-            } 
-        } 
+                cell.style.color = (saved === null && defaultCourses[`${h}-${d}`]) ? "var(--neon-cyan)" : "white";
+            }
+        }
     }
-    function initMap() { if (mapStarted) return; myMap = L.map('map').setView([46.6, 2.2], 5); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); mapStarted = true; }
+
+    function initMap() {
+        if (mapStarted) return;
+        myMap = L.map('map').setView([48.8566, 2.3522], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap);
+        setTimeout(() => { document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)"; }, 100);
+        mapStarted = true;
+    }
+
+    function locateGPS() {
+        if (!navigator.geolocation) return alert("Hardware GPS not found.");
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const { latitude, longitude } = pos.coords;
+            const icon = L.divIcon({ className: 'custom-div-icon', html: `<div style='background-color:var(--neon-cyan); width:18px; height:18px; border-radius:50%; box-shadow:0 0 15px var(--neon-cyan); border:2px solid white;'></div>` });
+            L.marker([latitude, longitude], {icon: icon}).addTo(myMap).bindPopup("<b>DEVICE LOCALIZED</b>").openPopup();
+            myMap.setView([latitude, longitude], 15);
+        }, () => alert("GPS Authorization Denied"));
+    }
+
     async function trackCustomIP() {
         const ip = document.getElementById('input-ip').value;
         const resp = await fetch(`https://ipapi.co/${ip}/json/`);
         const data = await resp.json();
-        L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`IP : ${data.ip}`).openPopup();
+        const icon = L.divIcon({ className: 'custom-div-icon', html: `<div style='background-color:#ff007f; width:18px; height:18px; border-radius:50%; box-shadow:0 0 15px #ff007f; border:2px solid white;'></div>` });
+        L.marker([data.latitude, data.longitude], {icon: icon}).addTo(myMap).bindPopup(`<b>TARGET IP: ${data.ip}</b><br>${data.city}`).openPopup();
         myMap.setView([data.latitude, data.longitude], 12);
     }
 </script>
