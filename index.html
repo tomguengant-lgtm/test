@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourSpace - Cyber Hub</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         :root {
             --bg-dark: #0f0c29;
@@ -43,6 +47,9 @@
         td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 40px; font-size: 10px; outline: none; text-align: center; }
 
         .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
+        
+        /* Styles pour les marqueurs de carte */
+        .custom-div-icon { background: none; border: none; }
     </style>
 </head>
 <body>
@@ -60,6 +67,7 @@
             <button class="nav-btn active" onclick="showTab('ai-tab')">Assistant IA</button>
             <button class="nav-btn" onclick="showTab('plan-tab')">Planning CPGE</button>
             <button class="nav-btn" onclick="showTab('contact-tab')">Widget Mail</button>
+            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Réseau & Géo</button>
         </nav>
 
         <div id="ai-tab" class="tab-content active">
@@ -96,10 +104,23 @@
                 <p style="font-size: 10px; color: #888; margin-top: 15px; text-align: center;">Les messages arrivent directement dans ta boîte mail.</p>
             </div>
         </div>
+
+        <div id="map-tab" class="tab-content">
+            <h3 style="color:var(--neon-cyan)">SURVEILLANCE GLOBALE</h3>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <button onclick="locateIP()" class="btn-action" style="margin:0; font-size:10px;">LOC. PAR IP (Ville)</button>
+                <button onclick="locateGPS()" class="btn-action" style="margin:0; font-size:10px; background:#00ffcc; color:#000;">LOC. GPS (Précis)</button>
+            </div>
+            <div id="map" style="width:100%; max-width:800px; height:450px; border-radius:15px; border:1px solid var(--neon-violet); box-shadow: 0 0 15px var(--neon-violet);"></div>
+            <p id="geo-info" style="font-size:11px; color:#888; margin-top:10px;"></p>
+        </div>
     </div>
 
 <script>
-    // --- COURS CPGE ---
+    // --- VARIABLES GLOBALES ---
+    let myMap; 
+    let mapStarted = false;
+
     const defaultCourses = {
         "8-1": "MATHS (L110)", "9-1": "MATHS (L110)", "10-1": "PC (V102)", "11-1": "PC (V102)", "12-1": "PAUSE", "13-1": "SI", "14-1": "SI", "15-1": "SI", "16-1": "SI",
         "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PC (V102)", "12-2": "PAUSE", "15-2": "ANGLAIS", "16-2": "ANGLAIS",
@@ -109,7 +130,7 @@
         "8-6": "DS", "9-6": "DS", "10-6": "DS", "11-6": "DS"
     };
 
-    // --- GÉNÉRATION ---
+    // --- GÉNÉRATION TABLEAU ---
     const rows = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
         let r = `<tr><td class="time-col">${h}h-${h+1}h</td>`;
@@ -117,7 +138,7 @@
         rows.innerHTML += r + `</tr>`;
     }
 
-    // --- LOGIQUE ---
+    // --- LOGIQUE CORE ---
     function unlock() {
         if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
             document.getElementById('login-screen').style.display = 'none';
@@ -133,6 +154,7 @@
         event.target.classList.add('active');
     }
 
+    // --- IA ---
     async function askAI() {
         const key = document.getElementById('api-key').value;
         const input = document.getElementById('user-input');
@@ -153,6 +175,7 @@
         } catch(e) { alert("Erreur API"); }
     }
 
+    // --- PLANNING ---
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
             for (let d = 1; d <= 7; d++) {
@@ -172,6 +195,38 @@
                 cell.style.color = (saved === null && def) ? "var(--neon-cyan)" : "white";
             }
         }
+    }
+
+    // --- CARTE (CORRIGÉ : SORTI DE LOADSCHEDULE) ---
+    function initMap() {
+        if (mapStarted) return;
+        myMap = L.map('map').setView([46.6, 2.2], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap);
+        document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)";
+        mapStarted = true;
+    }
+
+    async function locateIP() {
+        const resp = await fetch('https://ipapi.co/json/');
+        const data = await resp.json();
+        placeMarker(data.latitude, data.longitude, `<b>IP : ${data.ip}</b><br>${data.city}`, "#b449cc");
+    }
+
+    function locateGPS() {
+        if (!navigator.geolocation) return alert("Pas de GPS");
+        navigator.geolocation.getCurrentPosition((pos) => {
+            placeMarker(pos.coords.latitude, pos.coords.longitude, "Position GPS", "#00ffcc");
+            document.getElementById('geo-info').innerText = `GPS : ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+        });
+    }
+
+    function placeMarker(lat, lng, text, color) {
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div style='background-color:${color}; width:15px; height:15px; border-radius:50%; box-shadow:0 0 10px ${color}; border:2px solid white;'></div>`
+        });
+        L.marker([lat, lng], {icon: icon}).addTo(myMap).bindPopup(text).openPopup();
+        myMap.setView([lat, lng], 13);
     }
 </script>
 </body>
