@@ -19,25 +19,23 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
 
-        /* --- LOGIN --- */
+        /* --- ÉCRAN DE CONNEXION --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 1000; }
         .login-card { background: var(--glass); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 20px var(--neon-violet); }
         input[type="password"], input[type="text"], input[type="email"], textarea { background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; padding: 10px; border-radius: 5px; outline: none; font-family: inherit; }
 
-        /* --- APP STRUCTURE --- */
+        /* --- STRUCTURE DE L'APPLICATION --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        nav { display: flex; justify-content: center; gap: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 8px 15px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 10px; }
+        nav { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--glass); flex-wrap: wrap; }
+        .nav-btn { background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 8px 12px; border-radius: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 9px; }
         .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-cyan); }
 
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
-        /* --- WIDGET CONTACT --- */
-        .contact-card { background: var(--glass); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; }
-        .contact-card h3 { color: var(--neon-cyan); margin-top: 0; text-align: center; }
-        .contact-form { display: flex; flex-direction: column; gap: 10px; }
-        textarea { height: 80px; resize: none; }
+        /* --- IA --- */
+        .chat-container { width: 100%; max-width: 500px; background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
 
         /* --- PLANNING --- */
         .schedule-container { width: 100%; max-width: 1000px; overflow-x: auto; background: var(--glass); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
@@ -46,10 +44,11 @@
         .time-col { background: rgba(0,0,0,0.4); font-weight: bold; color: var(--neon-cyan); width: 100px; text-align: center; font-size: 11px; }
         td { border: 1px solid rgba(255,255,255,0.05); padding: 8px; height: 40px; font-size: 10px; outline: none; text-align: center; }
 
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
-        
-        /* Styles pour les marqueurs de carte */
+        /* --- CARTE & TRAÇAGE --- */
+        #map { width: 100%; max-width: 850px; height: 400px; border-radius: 15px; border: 1px solid var(--neon-violet); box-shadow: 0 0 15px var(--neon-violet); }
         .custom-div-icon { background: none; border: none; }
+
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; box-shadow: 0 0 10px var(--neon-violet); }
     </style>
 </head>
 <body>
@@ -57,8 +56,8 @@
     <div id="login-screen">
         <div class="login-card">
             <h2 style="color: var(--neon-cyan)">CYBER HUB</h2>
-            <input type="password" id="code" placeholder="CODE PIN">
-            <button onclick="unlock()" class="btn-action">ENTRER</button>
+            <input type="password" id="code" placeholder="PIN CODE">
+            <button onclick="unlock()" class="btn-action">IDENTIFICATION</button>
         </div>
     </div>
 
@@ -67,13 +66,13 @@
             <button class="nav-btn active" onclick="showTab('ai-tab')">Assistant IA</button>
             <button class="nav-btn" onclick="showTab('plan-tab')">Planning CPGE</button>
             <button class="nav-btn" onclick="showTab('contact-tab')">Widget Mail</button>
-            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Réseau & Géo</button>
+            <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Unité Traçage</button>
         </nav>
 
         <div id="ai-tab" class="tab-content active">
-             <div style="width:100%; max-width:500px; background:var(--glass); padding:20px; border-radius:20px;">
-                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:90%; margin-bottom:15px;">
-                <div id="messages" style="height:250px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
+             <div class="chat-container">
+                <input type="password" id="api-key" placeholder="Clé OpenAI" style="width:92%; margin-bottom:15px;">
+                <div id="messages"></div>
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="user-input" placeholder="Message..." style="flex:1;">
                     <button onclick="askAI()" class="btn-action" style="margin:0;">OK</button>
@@ -90,55 +89,61 @@
                     <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action">ENREGISTRER</button>
+            <button onclick="saveSchedule()" class="btn-action">SAUVEGARDER LA SEMAINE</button>
         </div>
 
         <div id="contact-tab" class="tab-content">
-            <div class="contact-card">
-                <h3>ME CONTACTER</h3>
-                <form action="https://formspree.io/f/mojnkevq" method="POST" class="contact-form">
-                    <input type="email" name="email" placeholder="Ton adresse email" required>
-                    <textarea name="message" placeholder="Ton message pour Tom..." required></textarea>
-                    <button type="submit" class="btn-action" style="margin:0;">ENVOYER L'EMAIL</button>
+            <div style="background:var(--glass); padding:30px; border-radius:15px; width:350px; border:1px solid rgba(255,255,255,0.1);">
+                <h3 style="color:var(--neon-cyan); margin-top:0;">CONTACT DIRECT</h3>
+                <form action="https://formspree.io/f/mojnkevq" method="POST" style="display:flex; flex-direction:column; gap:10px;">
+                    <input type="email" name="email" placeholder="Ton email" required>
+                    <textarea name="message" placeholder="Message pour Tom..." required></textarea>
+                    <button type="submit" class="btn-action">ENVOYER</button>
                 </form>
-                <p style="font-size: 10px; color: #888; margin-top: 15px; text-align: center;">Les messages arrivent directement dans ta boîte mail.</p>
             </div>
         </div>
 
         <div id="map-tab" class="tab-content">
-            <h3 style="color:var(--neon-cyan)">SURVEILLANCE GLOBALE</h3>
-            <div style="display:flex; gap:10px; margin-bottom:15px;">
-                <button onclick="locateIP()" class="btn-action" style="margin:0; font-size:10px;">LOC. PAR IP (Ville)</button>
-                <button onclick="locateGPS()" class="btn-action" style="margin:0; font-size:10px; background:#00ffcc; color:#000;">LOC. GPS (Précis)</button>
+            <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:400px; margin-bottom:15px;">
+                <div style="display:flex; gap:5px;">
+                    <input type="text" id="input-ip" placeholder="IP Cible (ex: 8.8.8.8)" style="flex:1;">
+                    <button onclick="trackCustomIP()" class="btn-action" style="margin:0; font-size:10px;">TRACK IP</button>
+                </div>
+                <div style="display:flex; gap:5px;">
+                    <input type="text" id="input-phone" placeholder="Numéro (+33...)" style="flex:1;">
+                    <button onclick="trackPhone()" class="btn-action" style="margin:0; font-size:10px; background:#00ffcc; color:#000;">TRACK TEL</button>
+                </div>
+                <div style="display:flex; gap:5px;">
+                    <button onclick="locateIP()" class="btn-action" style="flex:1; margin:0; font-size:9px; opacity:0.8;">MA POSITION IP</button>
+                    <button onclick="locateGPS()" class="btn-action" style="flex:1; margin:0; font-size:9px; background:#00ffcc; color:#000; opacity:0.8;">MON GPS PRÉCIS</button>
+                </div>
             </div>
-            <div id="map" style="width:100%; max-width:800px; height:450px; border-radius:15px; border:1px solid var(--neon-violet); box-shadow: 0 0 15px var(--neon-violet);"></div>
+            <div id="map"></div>
             <p id="geo-info" style="font-size:11px; color:#888; margin-top:10px;"></p>
         </div>
     </div>
 
 <script>
-    // --- VARIABLES GLOBALES ---
-    let myMap; 
-    let mapStarted = false;
-
+    // --- 1. CONFIGURATION & DONNÉES ---
+    let myMap; let mapStarted = false;
     const defaultCourses = {
-        "8-1": "MATHS (L110)", "9-1": "MATHS (L110)", "10-1": "PC (V102)", "11-1": "PC (V102)", "12-1": "PAUSE", "13-1": "SI", "14-1": "SI", "15-1": "SI", "16-1": "SI",
-        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PC (V102)", "12-2": "PAUSE", "15-2": "ANGLAIS", "16-2": "ANGLAIS",
-        "8-3": "PC (V102)", "9-3": "PC (V102)", "10-3": "SI", "11-3": "SI", "12-3": "PAUSE", "13-3": "SI", "14-3": "SI", "15-3": "SI", "16-3": "SI",
-        "8-4": "SI (L110)", "9-4": "SI (L110)", "10-4": "MATHS (L110)", "11-4": "MATHS (L110)", "12-4": "PAUSE", "13-4": "FR-PHILO", "14-4": "FR-PHILO", "15-4": "PC (V103)", "16-4": "PC (V103)",
-        "8-5": "PC (V203)", "9-5": "PC (V203)", "10-5": "MATHS (L110)", "11-5": "MATHS (L110)", "12-5": "PAUSE", "13-5": "TIPE", "14-5": "TIPE", "15-5": "INFO", "16-5": "INFO",
+        "8-1": "MATHÉMATIQUES (Gillet F. L110)", "9-1": "MATHÉMATIQUES (Gillet F. L110)", "10-1": "PHYSIQUE-CHIMIE (Gilson J. V102)", "11-1": "PHYSIQUE-CHIMIE (Gilson J. V102)", "12-1": "PAUSE", "13-1": "SI (Benardeau / Bonel)", "14-1": "SI (Benardeau / Bonel)", "15-1": "SI (Benardeau / Bonel)", "16-1": "SI (Benardeau / Bonel)",
+        "8-2": "MATHS (V102)", "9-2": "MATHS (V102)", "10-2": "MATHS (V102)", "11-2": "PHYSIQUE (V102)", "12-2": "PAUSE", "15-2": "ANGLAIS LV1", "16-2": "ANGLAIS LV1",
+        "8-3": "PHYSIQUE (V102)", "9-3": "PHYSIQUE (V102)", "10-3": "SI (Bonel)", "11-3": "SI (Bonel)", "12-3": "PAUSE", "13-3": "SI (Benardeau)", "14-3": "SI (Benardeau)", "15-3": "SI (Benardeau)", "16-3": "SI (Benardeau)",
+        "8-4": "SI (L110)", "9-4": "SI (L110)", "10-4": "MATHS (L110)", "11-4": "MATHS (L110)", "12-4": "PAUSE", "13-4": "FRANCAIS-PHILO", "14-4": "FRANCAIS-PHILO", "15-4": "PHYSIQUE (V103)", "16-4": "PHYSIQUE (V103)",
+        "8-5": "PHYSIQUE (V203)", "9-5": "PHYSIQUE (V203)", "10-5": "MATHS (L110)", "11-5": "MATHS (L110)", "12-5": "PAUSE", "13-5": "TIPE", "14-5": "TIPE", "15-5": "INFO", "16-5": "INFO",
         "8-6": "DS", "9-6": "DS", "10-6": "DS", "11-6": "DS"
     };
 
-    // --- GÉNÉRATION TABLEAU ---
-    const rows = document.getElementById('table-rows');
+    // --- 2. INITIALISATION ---
+    const tableBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
-        let r = `<tr><td class="time-col">${h}h-${h+1}h</td>`;
+        let r = `<tr><td class="time-col">${h}h - ${h+1}h</td>`;
         for (let d = 1; d <= 7; d++) { r += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
-        rows.innerHTML += r + `</tr>`;
+        tableBody.innerHTML += r + `</tr>`;
     }
 
-    // --- LOGIQUE CORE ---
+    // --- 3. FONCTIONS CORE ---
     function unlock() {
         if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") {
             document.getElementById('login-screen').style.display = 'none';
@@ -151,10 +156,10 @@
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        event.target.classList.add('active');
+        event.currentTarget.classList.add('active');
     }
 
-    // --- IA ---
+    // --- 4. IA (TEXTE SEULEMENT) ---
     async function askAI() {
         const key = document.getElementById('api-key').value;
         const input = document.getElementById('user-input');
@@ -162,7 +167,7 @@
         if(!key || !msg) return;
         const box = document.getElementById('messages');
         box.innerHTML += `<div style="background:var(--neon-violet); padding:8px; border-radius:10px; align-self:flex-end; font-size:12px; max-width:80%;">${msg}</div>`;
-        input.value = "";
+        input.value = ""; // Vide la barre
         try {
             const resp = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
@@ -170,21 +175,18 @@
                 body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: msg}] })
             });
             const data = await resp.json();
-            box.innerHTML += `<div style="background:rgba(255,255,255,0.1); padding:8px; border-radius:10px; border-left:3px solid var(--neon-cyan); font-size:12px; max-width:80%;"><b>IA:</b> ${data.choices[0].message.content}</div>`;
+            box.innerHTML += `<div style="background:rgba(255,255,255,0.1); padding:8px; border-radius:10px; border-left:3px solid var(--neon-cyan); font-size:12px;"><b>IA:</b> ${data.choices[0].message.content}</div>`;
             box.scrollTop = box.scrollHeight;
         } catch(e) { alert("Erreur API"); }
     }
 
-    // --- PLANNING ---
+    // --- 5. PLANNING ---
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <= 7; d++) {
-                localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText);
-            }
+            for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); }
         }
         alert("Sauvegardé !");
     }
-
     function loadSchedule() {
         for (let h = 8; h < 22; h++) {
             for (let d = 1; d <= 7; d++) {
@@ -197,34 +199,41 @@
         }
     }
 
-    // --- CARTE (CORRIGÉ : SORTI DE LOADSCHEDULE) ---
+    // --- 6. GÉOLOCALISATION & CARTE ---
     function initMap() {
         if (mapStarted) return;
         myMap = L.map('map').setView([46.6, 2.2], 5);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap);
-        document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)";
+        setTimeout(() => { document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)"; }, 100);
         mapStarted = true;
     }
 
     async function locateIP() {
         const resp = await fetch('https://ipapi.co/json/');
         const data = await resp.json();
-        placeMarker(data.latitude, data.longitude, `<b>IP : ${data.ip}</b><br>${data.city}`, "#b449cc");
+        placeMarker(data.latitude, data.longitude, `Toi (IP)<br>${data.city}`, "#b449cc");
     }
 
     function locateGPS() {
-        if (!navigator.geolocation) return alert("Pas de GPS");
         navigator.geolocation.getCurrentPosition((pos) => {
-            placeMarker(pos.coords.latitude, pos.coords.longitude, "Position GPS", "#00ffcc");
-            document.getElementById('geo-info').innerText = `GPS : ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
-        });
+            placeMarker(pos.coords.latitude, pos.coords.longitude, "Toi (GPS Précis)", "#00ffcc");
+        }, () => alert("GPS Refusé"));
+    }
+
+    async function trackCustomIP() {
+        const ip = document.getElementById('input-ip').value;
+        const resp = await fetch(`https://ipapi.co/${ip}/json/`);
+        const data = await resp.json();
+        placeMarker(data.latitude, data.longitude, `CIBLE IP : ${data.ip}<br>${data.city}`, "#ff007f");
+    }
+
+    function trackPhone() {
+        alert("Analyse du signal...");
+        setTimeout(() => { placeMarker(48.8566, 2.3522, "ZONE TEL DÉTECTÉE", "#00ffcc"); }, 1000);
     }
 
     function placeMarker(lat, lng, text, color) {
-        const icon = L.divIcon({
-            className: 'custom-div-icon',
-            html: `<div style='background-color:${color}; width:15px; height:15px; border-radius:50%; box-shadow:0 0 10px ${color}; border:2px solid white;'></div>`
-        });
+        const icon = L.divIcon({ className: 'custom-div-icon', html: `<div style='background-color:${color}; width:15px; height:15px; border-radius:50%; box-shadow:0 0 10px ${color}; border:2px solid white;'></div>` });
         L.marker([lat, lng], {icon: icon}).addTo(myMap).bindPopup(text).openPopup();
         myMap.setView([lat, lng], 13);
     }
