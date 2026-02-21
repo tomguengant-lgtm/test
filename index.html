@@ -146,4 +146,75 @@
     // --- SAUVEGARDE & CHARGEMENT ---
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
-            for (let d = 1; d <=
+            for (let d = 1; d <= 7; d++) {
+                const text = document.getElementById(`cell-${h}-${d}`).innerText;
+                localStorage.setItem(`plan-${h}-${d}`, text);
+            }
+        }
+        localStorage.setItem('last_week', getWeekNumber(new Date()));
+        alert("Modifications enregistrées pour cette semaine !");
+    }
+
+    function loadSchedule() {
+        for (let h = 8; h < 22; h++) {
+            for (let d = 1; d <= 7; d++) {
+                const cell = document.getElementById(`cell-${h}-${d}`);
+                const saved = localStorage.getItem(`plan-${h}-${d}`);
+                const def = defaultCourses[`${h}-${d}`];
+                
+                // Si on a une modif sauvée, on l'affiche. Sinon, le cours par défaut.
+                cell.innerText = saved !== null ? saved : (def || "");
+                
+                // Petit style pour différencier les cours officiels
+                if(!saved && def) cell.style.color = "var(--neon-cyan)";
+                else cell.style.color = "white";
+            }
+        }
+    }
+
+    function checkAutoReset() {
+        const currentWeek = getWeekNumber(new Date());
+        const lastWeek = localStorage.getItem('last_week');
+        if (lastWeek && currentWeek !== parseInt(lastWeek)) {
+            // C'est une nouvelle semaine ! On vide les modifs de l'utilisateur
+            for (let i = 0; i < localStorage.length; i++){
+                let key = localStorage.key(i);
+                if(key.startsWith("plan-")) { localStorage.removeItem(key); i--; }
+            }
+        }
+    }
+
+    function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+    }
+
+    // (Code de l'IA Vocale identique à précédemment...)
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'fr-FR';
+    function startListening() { recognition.start(); }
+    recognition.onresult = (e) => { document.getElementById('user-input').value = e.results[0][0].transcript; askAI(); };
+    async function askAI() {
+        const key = document.getElementById('api-key').value;
+        const msg = document.getElementById('user-input').value;
+        if(!key || !msg) return;
+        const box = document.getElementById('messages');
+        box.innerHTML += `<div class="msg user">${msg}</div>`;
+        try {
+            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+                body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: msg}] })
+            });
+            const data = await resp.json();
+            const reply = data.choices[0].message.content;
+            box.innerHTML += `<div class="msg ai"><b>IA:</b> ${reply}</div>`;
+            box.scrollTop = box.scrollHeight;
+            const ut = new SpeechSynthesisUtterance(reply); ut.lang = 'fr-FR'; window.speechSynthesis.speak(ut);
+        } catch(e) { alert("Erreur API"); }
+    }
+</script>
+</body>
+</html>
