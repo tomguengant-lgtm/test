@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v5.2 RED INTRO</title>
+    <title>YourSpace - Global Cyber Hub v5.3 RED FIXED</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -18,56 +18,21 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: black; color: white; height: 100vh; overflow: hidden; font-size: 11px; }
 
-        /* --- INTRO SCREEN (NEW) --- */
-        #intro-screen {
-            position: fixed;
-            inset: 0;
-            background: black;
-            z-index: 9000; /* Priorité absolue */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        #intro-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .intro-overlay {
-            position: absolute;
-            bottom: 50px;
-            font-family: monospace;
-            color: var(--neon-cyan);
-            letter-spacing: 2px;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        /* --- INTRO SCREEN --- */
+        #intro-screen { position: fixed; inset: 0; background: black; z-index: 9000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #intro-video { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- BACKGROUND VIDEO (HUB) --- */
-        #video-container {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            display: none;
-            background: black;
-            overflow: hidden;
-        }
-        #video-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; 
-            transform: scale(0.5);
-            filter: brightness(0.7) sepia(1) hue-rotate(-50deg) saturate(3);
-        }
+        #video-container { position: fixed; inset: 0; z-index: -2; display: none; background: black; overflow: hidden; }
+        #video-bg { width: 100%; height: 100%; object-fit: contain; transform: scale(0.5); filter: brightness(0.4) sepia(1) hue-rotate(-50deg) saturate(3); }
 
-        /* --- LOGIN SCREEN --- */
+        /* --- LOGIN SCREEN (ENLARGED) --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: none; align-items: center; justify-content: center; z-index: 5000; }
         .login-card { background: rgba(30, 0, 0, 0.8); padding: 60px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 40px var(--neon-violet); width: 100%; max-width: 450px; }
         .login-card h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 3px; color: var(--neon-cyan); }
         input { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; font-size: 14px; width: 80%; }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGATION (ENLARGED) --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
         nav { display: none; justify-content: center; gap: 15px; padding: 25px; background: rgba(20,0,0,0.9); border-bottom: 3px solid var(--neon-violet); flex-wrap: wrap; z-index: 10; }
         .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 28px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
@@ -86,35 +51,23 @@
             mask-image: radial-gradient(circle, transparent 30%, black 31%);
             -webkit-mask-image: radial-gradient(circle, transparent 30%, black 31%);
         }
-        .hub-item {
-            position: relative;
-            background: rgba(150, 0, 0, 0.2);
-            border: 3px solid var(--neon-violet);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.3s;
-            backdrop-filter: blur(10px);
-        }
+        .hub-item { background: rgba(150, 0, 0, 0.2); border: 3px solid var(--neon-violet); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); }
         .hub-item.top-left { border-radius: 100% 0 0 0; }
         .hub-item.top-right { border-radius: 0 100% 0 0; }
         .hub-item.bottom-left { border-radius: 0 0 0 100%; }
         .hub-item.bottom-right { border-radius: 0 0 100% 0; }
-        .hub-item:hover { background: var(--neon-violet); box-shadow: 0 0 40px var(--neon-violet); transform: scale(1.03); z-index: 10; }
+        .hub-item:hover { background: var(--neon-violet); box-shadow: 0 0 40px var(--neon-violet); transform: scale(1.03); }
         .hub-item h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 5px black; }
 
-        /* --- TABS & GATEWAYS --- */
-        .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; z-index: 5; }
-        .tab-content.active { display: flex; }
-        .gateway-card { background: rgba(30,0,0,0.8); padding: 50px; border-radius: 20px; border: 2px solid var(--neon-violet); text-align: center; max-width: 500px; margin-top: 50px; box-shadow: 0 0 30px rgba(255,0,0,0.2); }
-
-        /* --- AI FIX --- */
+        /* --- AI ASSISTANT (FIXED) --- */
         #ai-container { width: 100%; max-width: 600px; background: #120202; padding: 30px; border-radius: 20px; border: 1px solid var(--neon-violet); }
-        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; color: #fff; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        #user-input { width: 80%; background: #2a0a0a !important; color: #ffffff !important; border: 1px solid var(--neon-violet) !important; padding: 15px; font-weight: bold; }
+        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; color: #fff; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 10px; text-align: left; }
+        .ai-input-field { background: #2a0a0a !important; color: #ffffff !important; border: 1px solid var(--neon-violet) !important; padding: 12px; margin-bottom: 10px; border-radius: 5px; outline: none; }
 
         /* --- UI ELEMENTS --- */
+        .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; z-index: 5; }
+        .tab-content.active { display: flex; }
+        .gateway-card { background: rgba(30,0,0,0.8); padding: 50px; border-radius: 20px; border: 2px solid var(--neon-violet); text-align: center; max-width: 500px; margin-top: 50px; }
         .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 10px; background: rgba(30,0,0,0.5); }
         th { background: var(--neon-violet); color: white; padding: 8px; }
         td { border: 1px solid rgba(255,0,0,0.1); padding: 5px; text-align: center; color: white; }
@@ -128,7 +81,7 @@
         <video id="intro-video" autoplay muted playsinline>
             <source src="video2.mp4" type="video/mp4">
         </video>
-        <div class="intro-overlay">> CLICK TO INITIALIZE ACCESS <</div>
+        <div style="position:absolute; bottom:50px; color:var(--neon-cyan); letter-spacing:2px; font-family:monospace;">> CLICK TO INITIALIZE ACCESS <</div>
     </div>
 
     <div id="video-container">
@@ -166,15 +119,15 @@
 
         <div id="interpol-tab" class="tab-content">
             <div class="gateway-card">
-                <h1 style="color:var(--neon-cyan); margin-bottom:15px;">INTERPOL DATABASE</h1>
-                <button onclick="window.open('https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices', '_blank')" class="btn-action" style="width:100%; padding:20px;">OUVRIR INTERPOL</button>
+                <h1 style="color:var(--neon-cyan); margin-bottom:15px;">INTERPOL PORTAL</h1>
+                <button onclick="window.open('https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices', '_blank')" class="btn-action" style="width:100%; padding:20px;">OPEN INTERPOL</button>
             </div>
         </div>
 
         <div id="cia-tab" class="tab-content">
             <div class="gateway-card">
                 <h1 style="color:var(--neon-cyan); margin-bottom:15px;">CIA RESOURCES</h1>
-                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%; padding:20px;">OUVRIR CIA</button>
+                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%; padding:20px;">OPEN CIA</button>
             </div>
         </div>
 
@@ -184,15 +137,19 @@
         </div>
 
         <div id="map-tab" class="tab-content">
-            <div style="display:flex; gap:10px; margin-bottom:15px; width:100%; max-width:500px;"><input type="text" id="input-ip" placeholder="Target IP" style="flex:1;"><button onclick="trackCustomIP()" class="btn-action">TRACK</button><button onclick="locateGPS()" class="btn-action" style="background:var(--neon-violet);">GPS</button></div>
+            <div style="display:flex; gap:10px; margin-bottom:15px; width:100%; max-width:500px;"><input type="text" id="input-ip" placeholder="Target IP" class="ai-input-field" style="flex:1; margin-bottom:0;"><button onclick="trackCustomIP()" class="btn-action">TRACK</button></div>
             <div id="map"></div>
         </div>
 
         <div id="ai-tab" class="tab-content">
              <div id="ai-container">
                 <h2 style="color:var(--neon-cyan); margin-top:0;">AI UNIT 01</h2>
+                <input type="password" id="api-key" placeholder="Paste OpenAI Key here..." class="ai-input-field" style="width:95%;">
                 <div id="messages"></div>
-                <div style="display:flex; gap:10px;"><input type="text" id="user-input" placeholder="Enter command..."><button onclick="askAI()" class="btn-action">SEND</button></div>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="user-input" placeholder="Type command..." class="ai-input-field" style="flex:1; margin-bottom:0;">
+                    <button onclick="askAI()" class="btn-action">SEND</button>
+                </div>
              </div>
         </div>
     </div>
@@ -201,16 +158,9 @@
     let myMap; let mapStarted = false; 
     const introVid = document.getElementById('intro-video');
 
-    // --- INTRO LOGIC ---
     introVid.onended = function() { endIntro(); };
+    function endIntro() { document.getElementById('intro-screen').style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; introVid.pause(); }
 
-    function endIntro() {
-        document.getElementById('intro-screen').style.display = 'none';
-        document.getElementById('login-screen').style.display = 'flex';
-        introVid.pause();
-    }
-
-    // --- NAVIGATION ---
     function unlock() { if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") { document.getElementById('login-screen').style.display = 'none'; document.getElementById('main-app').style.display = 'flex'; goToHub(); loadSchedule(); } }
 
     function goToHub() {
@@ -244,8 +194,27 @@
     function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("SAVED"); }
     function loadSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { const cell = document.getElementById(`cell-${h}-${d}`); cell.innerText = localStorage.getItem(`plan-${h}-${d}`) || ""; } } }
     function initMap() { if (mapStarted) return; myMap = L.map('map').setView([48.85, 2.35], 4); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); mapStarted = true; }
-    function locateGPS() { navigator.geolocation.getCurrentPosition((pos) => { L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(myMap).bindPopup("YOU").openPopup(); myMap.setView([pos.coords.latitude, pos.coords.longitude], 15); }); }
-    async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`TARGET: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
+    async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`IP: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
+    
+    // --- AI ---
+    async function askAI() {
+        const key = document.getElementById('api-key').value;
+        const prompt = document.getElementById('user-input').value;
+        if(!key) return alert("Please enter API Key");
+        const msgDiv = document.getElementById('messages');
+        msgDiv.innerHTML += `<div><b>YOU:</b> ${prompt}</div>`;
+        document.getElementById('user-input').value = "";
+        try {
+            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+                body: JSON.stringify({ model: "gpt-3.5-turbo", messages: [{role: "user", content: prompt}] })
+            });
+            const data = await resp.json();
+            msgDiv.innerHTML += `<div style="color:var(--neon-cyan)"><b>AI:</b> ${data.choices[0].message.content}</div>`;
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+        } catch(e) { msgDiv.innerHTML += `<div>ERROR: Connection failed.</div>`; }
+    }
 </script>
 </body>
 </html>
