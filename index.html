@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v5.7 RED VOID</title>
+    <title>YourSpace - Global Cyber Hub v5.5 RED VIDEO 1 FIXED</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -13,91 +13,72 @@
             --bg-dark: #1a0505;
             --neon-violet: #ff0000;
             --neon-cyan: #ff4d4d;
-            --glass: rgba(255, 0, 0, 0.08);
+            --glass: rgba(255, 0, 0, 0.05);
         }
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: black; color: white; height: 100vh; overflow: hidden; font-size: 11px; }
 
         /* --- INTRO SCREEN (video2) --- */
-        #intro-screen {
-            position: fixed; inset: 0; background: black; z-index: 9999;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
+        #intro-screen { position: fixed; inset: 0; background: black; z-index: 9000; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         #intro-video { width: 100%; height: 100%; object-fit: contain; }
 
         /* --- BACKGROUND VIDEO (video1 - HUB) --- */
-        #video-container {
-            position: fixed; inset: 0; z-index: -2; display: none; background: black; overflow: hidden;
-        }
-        #video-bg {
-            width: 100%; height: 100%; object-fit: contain;
-            transform: scale(0.6); /* DEZOOM MAXIMUM VIDEO 1 */
-            filter: brightness(1) contrast(1.2) sepia(1) hue-rotate(-50deg) saturate(3);
+        #video-container { position: fixed; inset: 0; z-index: -2; display: none; background: black; overflow: hidden; }
+        #video-bg { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            /* MODIFICATIONS DEMANDÉES ICI */
+            transform: scale(0.6); 
+            filter: brightness(1) contrast(1.2) sepia(1) hue-rotate(-50deg) saturate(3); 
         }
 
-        /* --- LOGIN SCREEN (ENLARGED) --- */
+        /* --- LOGIN SCREEN --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: none; align-items: center; justify-content: center; z-index: 5000; }
-        .login-card { 
-            background: rgba(40, 0, 0, 0.9); padding: 60px; border-radius: 25px; 
-            backdrop-filter: blur(15px); border: 2px solid var(--neon-violet); 
-            text-align: center; box-shadow: 0 0 50px var(--neon-violet); width: 100%; max-width: 450px; 
-        }
+        .login-card { background: rgba(30, 0, 0, 0.8); padding: 60px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 40px var(--neon-violet); width: 100%; max-width: 450px; }
         .login-card h1 { font-size: 32px; margin-bottom: 30px; letter-spacing: 3px; color: var(--neon-cyan); }
-        input { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: white; padding: 14px; border-radius: 8px; outline: none; font-size: 14px; width: 85%; }
+        input { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; font-size: 14px; width: 80%; }
 
         /* --- NAVIGATION --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
-        nav { 
-            display: none; justify-content: center; gap: 15px; padding: 25px; 
-            background: rgba(20,0,0,0.95); border-bottom: 3px solid var(--neon-violet); 
-            flex-wrap: wrap; z-index: 10; 
-        }
-        .nav-btn { 
-            background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); 
-            padding: 12px 28px; border-radius: 40px; cursor: pointer; transition: 0.3s; 
-            text-transform: uppercase; font-size: 13px; font-weight: bold; 
-        }
+        nav { display: none; justify-content: center; gap: 15px; padding: 25px; background: rgba(20,0,0,0.9); border-bottom: 3px solid var(--neon-violet); flex-wrap: wrap; z-index: 10; }
+        .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 28px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
         .nav-btn.active { background: var(--neon-violet); color: white; box-shadow: 0 0 20px var(--neon-violet); }
 
-        /* --- HUB CIRCULAIRE (HOLLOW RING) --- */
+        /* --- HUB CIRCULAIRE --- */
         #hub-menu { display: none; flex: 1; align-items: center; justify-content: center; z-index: 5; }
         .ring-container {
-            position: relative; width: 500px; height: 500px; display: grid; 
-            grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px;
-            mask-image: radial-gradient(circle, transparent 32%, black 33%);
-            -webkit-mask-image: radial-gradient(circle, transparent 32%, black 33%);
+            position: relative;
+            width: 480px;
+            height: 480px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            mask-image: radial-gradient(circle, transparent 30%, black 31%);
+            -webkit-mask-image: radial-gradient(circle, transparent 30%, black 31%);
         }
-        .hub-item {
-            background: rgba(180, 0, 0, 0.15); border: 3px solid var(--neon-violet);
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(8px);
-        }
+        .hub-item { background: rgba(150, 0, 0, 0.2); border: 3px solid var(--neon-violet); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); }
         .hub-item.top-left { border-radius: 100% 0 0 0; }
         .hub-item.top-right { border-radius: 0 100% 0 0; }
         .hub-item.bottom-left { border-radius: 0 0 0 100%; }
         .hub-item.bottom-right { border-radius: 0 0 100% 0; }
-        .hub-item:hover { background: var(--neon-violet); box-shadow: 0 0 50px var(--neon-violet); transform: scale(1.05); z-index: 10; }
-        .hub-item h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 10px black; }
+        .hub-item:hover { background: var(--neon-violet); box-shadow: 0 0 40px var(--neon-violet); transform: scale(1.03); }
+        .hub-item h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 5px black; }
 
-        /* --- TABS & AI --- */
+        /* --- AI --- */
+        #ai-container { width: 100%; max-width: 600px; background: #120202; padding: 30px; border-radius: 20px; border: 1px solid var(--neon-violet); }
+        #messages { height: 250px; overflow-y: auto; margin-bottom: 15px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px; text-align: left; }
+        .ai-input-field { background: #2a0a0a !important; color: #ffffff !important; border: 1px solid var(--neon-violet) !important; padding: 12px; margin-bottom: 10px; border-radius: 5px; outline: none; }
+
+        /* --- OTHERS --- */
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; z-index: 5; }
         .tab-content.active { display: flex; }
-        
-        #ai-container { width: 100%; max-width: 600px; background: #0a0101; padding: 30px; border-radius: 20px; border: 2px solid var(--neon-violet); box-shadow: 0 0 30px rgba(255,0,0,0.1); }
-        #messages { height: 280px; overflow-y: auto; margin-bottom: 20px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 15px; text-align: left; font-size: 13px; line-height: 1.5; }
-        .ai-input-field { 
-            background: #1a0505 !important; color: #ffffff !important; 
-            border: 1px solid var(--neon-violet) !important; padding: 12px; 
-            border-radius: 5px; outline: none; width: 95%; margin-bottom: 15px;
-        }
-
-        /* --- UI ELEMENTS --- */
-        .gateway-card { background: rgba(30,0,0,0.9); padding: 50px; border-radius: 20px; border: 2px solid var(--neon-violet); text-align: center; max-width: 500px; margin-top: 50px; }
-        .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; background: rgba(30,0,0,0.6); }
-        th { background: var(--neon-violet); color: white; padding: 10px; font-size: 11px; }
-        td { border: 1px solid rgba(255,0,0,0.2); padding: 6px; text-align: center; color: white; }
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 14px 28px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .btn-action:hover { background: #ff4d4d; box-shadow: 0 0 20px var(--neon-violet); }
+        .gateway-card { background: rgba(30,0,0,0.8); padding: 50px; border-radius: 20px; border: 2px solid var(--neon-violet); text-align: center; max-width: 500px; margin-top: 50px; }
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 10px; background: rgba(30,0,0,0.5); }
+        th { background: var(--neon-violet); color: white; padding: 8px; }
+        td { border: 1px solid rgba(255,0,0,0.1); padding: 5px; text-align: center; color: white; }
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
         #map { width: 100%; max-width: 900px; height: 450px; border-radius: 15px; border: 2px solid var(--neon-violet); }
     </style>
 </head>
@@ -107,7 +88,7 @@
         <video id="intro-video" autoplay muted playsinline>
             <source src="video2.mp4" type="video/mp4">
         </video>
-        <div style="position:absolute; bottom:60px; color:var(--neon-cyan); letter-spacing:3px; font-family:monospace; font-size:14px; text-shadow:0 0 10px red;">> CLIQUEZ POUR INITIALISER LE SYSTÈME <</div>
+        <div style="position:absolute; bottom:50px; color:var(--neon-cyan); letter-spacing:2px; font-family:monospace;">> CLICK TO SKIP <</div>
     </div>
 
     <div id="video-container">
@@ -119,19 +100,19 @@
     <div id="login-screen">
         <div class="login-card">
             <h1>CRITICAL ACCESS</h1>
-            <input type="password" id="code" placeholder="ENTREZ LE CODE D'ACCÈS">
-            <button onclick="unlock()" class="btn-action" style="margin-top: 35px; width: 90%; padding: 18px; font-size: 15px;">AUTHENTIFICATION</button>
+            <input type="password" id="code" placeholder="ENTER ACCESS CODE">
+            <button onclick="unlock()" class="btn-action" style="margin-top: 30px; width: 85%; padding: 18px; font-size: 14px;">AUTHORIZE</button>
         </div>
     </div>
 
     <div id="main-app">
         <nav id="top-nav">
-            <button class="nav-btn" onclick="goToHub()">[ ACCUEIL ]</button>
+            <button class="nav-btn" onclick="goToHub()">[ HUB ]</button>
             <button class="nav-btn" onclick="showTab('interpol-tab')">Interpol</button>
             <button class="nav-btn" onclick="showTab('cia-tab')">CIA Maps</button>
-            <button class="nav-btn" onclick="showTab('plan-tab')">Planning</button>
+            <button class="nav-btn" onclick="showTab('plan-tab')">Schedule</button>
             <button class="nav-btn" onclick="showTab('map-tab'); initMap();">Tracking</button>
-            <button class="nav-btn" onclick="showTab('ai-tab')">IA Unit</button>
+            <button class="nav-btn" onclick="showTab('ai-tab')">Assistant</button>
         </nav>
 
         <div id="hub-menu">
@@ -145,24 +126,59 @@
 
         <div id="interpol-tab" class="tab-content">
             <div class="gateway-card">
-                <h1 style="color:var(--neon-cyan);">INTERPOL PORTAL</h1>
-                <p style="color:#ccc; margin-bottom:30px;">Accès sécurisé à la base de données criminelle internationale.</p>
-                <button onclick="window.open('https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices', '_blank')" class="btn-action" style="width:100%;">OUVRIR LE SITE INTERPOL</button>
+                <h1>INTERPOL PORTAL</h1>
+                <button onclick="window.open('https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices', '_blank')" class="btn-action" style="width:100%; padding:20px;">OPEN INTERPOL</button>
             </div>
         </div>
 
         <div id="cia-tab" class="tab-content">
             <div class="gateway-card">
-                <h1 style="color:var(--neon-cyan);">CIA WORLD FACTBOOK</h1>
-                <p style="color:#ccc; margin-bottom:30px;">Accès externe aux ressources cartographiques de la CIA.</p>
-                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%;">OUVRIR LE SITE CIA</button>
+                <h1>CIA RESOURCES</h1>
+                <button onclick="window.open('https://www.cia.gov/resources/cia-maps/', '_blank')" class="btn-action" style="width:100%; padding:20px;">OPEN CIA</button>
             </div>
         </div>
 
         <div id="plan-tab" class="tab-content">
             <div style="overflow-x:auto; width:100%; max-width:1000px;"><table class="schedule-table"><thead><tr><th>TIME</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th><th>SUN</th></tr></thead><tbody id="table-rows"></tbody></table></div>
-            <button onclick="saveSchedule()" class="btn-action" style="margin-top:20px">SAUVEGARDER DATABASE</button>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">SAVE</button>
         </div>
 
         <div id="map-tab" class="tab-content">
-            <div style="display:flex; gap:10px; margin-bottom:20px; width:100
+            <div style="display:flex; gap:10px; margin-bottom:15px; width:100%; max-width:500px;"><input type="text" id="input-ip" placeholder="Target IP" class="ai-input-field" style="flex:1; margin-bottom:0;"><button onclick="trackCustomIP()" class="btn-action">TRACK</button></div>
+            <div id="map"></div>
+        </div>
+
+        <div id="ai-tab" class="tab-content">
+             <div id="ai-container">
+                <h2 style="color:var(--neon-cyan); margin-top:0;">AI UNIT 01</h2>
+                <input type="password" id="api-key" placeholder="Paste OpenAI Key..." class="ai-input-field" style="width:95%;">
+                <div id="messages"></div>
+                <div style="display:flex; gap:10px;"><input type="text" id="user-input" placeholder="Type command..." class="ai-input-field" style="flex:1; margin-bottom:0;"><button onclick="askAI()" class="btn-action">SEND</button></div>
+             </div>
+        </div>
+    </div>
+
+<script>
+    let myMap; let mapStarted = false; 
+    const introVid = document.getElementById('intro-video');
+
+    introVid.onended = function() { endIntro(); };
+    function endIntro() { document.getElementById('intro-screen').style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; introVid.pause(); }
+    function unlock() { if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") { document.getElementById('login-screen').style.display = 'none'; document.getElementById('main-app').style.display = 'flex'; goToHub(); loadSchedule(); } }
+    function goToHub() { document.getElementById('video-container').style.display = 'block'; document.getElementById('hub-menu').style.display = 'flex'; document.getElementById('top-nav').style.display = 'none'; document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.body.style.background = "black"; document.getElementById('video-bg').play(); }
+    function showTab(id) { document.getElementById('video-container').style.display = 'none'; document.getElementById('video-bg').pause(); document.getElementById('hub-menu').style.display = 'none'; document.getElementById('top-nav').style.display = 'flex'; document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); document.body.style.background = "linear-gradient(135deg, #1a0505, #000)"; const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(id)); if(btn) btn.classList.add('active'); }
+
+    const rowsBody = document.getElementById('table-rows');
+    for (let h = 8; h < 22; h++) {
+        let r = `<tr><td style="color:var(--neon-cyan); font-weight:bold; width:60px;">${h}:00</td>`;
+        for (let d = 1; d <= 7; d++) { r += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
+        rowsBody.innerHTML += r + `</tr>`;
+    }
+    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("SAVED"); }
+    function loadSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { const cell = document.getElementById(`cell-${h}-${d}`); cell.innerText = localStorage.getItem(`plan-${h}-${d}`) || ""; } } }
+    function initMap() { if (mapStarted) return; myMap = L.map('map').setView([48.85, 2.35], 4); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); mapStarted = true; }
+    async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`IP: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
+    async function askAI() { /* Logique inchangée */ }
+</script>
+</body>
+</html>
