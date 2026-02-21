@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v4.7</title>
+    <title>YourSpace - Global Cyber Hub v4.8</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -18,28 +18,24 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: black; color: white; height: 100vh; overflow: hidden; font-size: 11px; }
 
-        /* --- BACKGROUND VIDEO (MODIFIÉ POUR DÉZOOM) --- */
+        /* --- BACKGROUND VIDEO (CONFIGURÉE POUR DÉZOOM MAXIMUM) --- */
         #video-container {
             position: fixed;
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh; /* Force la taille de l'écran */
+            inset: 0;
             z-index: -2;
             display: none;
-            overflow: hidden; /* Important : cache les bords qui dépassent */
+            background: black; /* Fond noir si la vidéo ne remplit pas tout après dézoom */
+            overflow: hidden;
         }
         #video-bg {
-            /* L'astuce du dézoom : */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            /* 1. On rend la vidéo IMMENSE (2x la taille de l'écran) */
-            width: 200vw; 
-            height: 200vh;
-            /* 2. On la centre et on réduit son échelle à 50% (scale 0.5) */
-            /* Change 0.5 vers 0.7 pour moins de dézoom, ou 0.3 pour plus */
-            transform: translate(-50%, -50%) scale(0.5);
-            object-fit: cover;
-            filter: brightness(0.4);
+            width: 100%;
+            height: 100%;
+            /* 'contain' permet de voir toute la vidéo sans zoomer dedans */
+            object-fit: contain; 
+            /* 'scale(0.8)' réduit la taille de la vidéo pour l'éloigner encore plus */
+            /* Ajuste 0.8 (ex: 0.6 pour dézoomer encore plus, ou 1.0 pour taille normale) */
+            transform: scale(0.8);
+            filter: brightness(0.5);
         }
 
         /* --- LOGIN SCREEN (ENLARGED) --- */
@@ -65,12 +61,6 @@
         .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; z-index: 5; }
         .tab-content.active { display: flex; }
 
-        /* --- TOOLS UI --- */
-        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; width: 100%; max-width: 900px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; border: 1px solid var(--neon-violet); margin-bottom: 20px; }
-        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1050px; }
-        .notice-card { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; }
-        .notice-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 6px; }
-
         .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 10px; background: rgba(0,0,0,0.5); }
         th { background: var(--neon-violet); color: white; padding: 8px; }
         td { border: 1px solid rgba(255,255,255,0.1); padding: 5px; text-align: center; }
@@ -85,15 +75,6 @@
         <video id="video-bg" muted loop playsinline>
             <source src="video1.mp4" type="video/mp4">
         </video>
-    </div>
-
-    <div id="detail-modal">
-        <div style="position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:6000; display:none; align-items:center; justify-content:center;" id="modal-container">
-            <div style="background:#0f0c29; border:1px solid var(--neon-violet); border-radius:15px; width:100%; max-width:650px; padding:20px; position:relative;">
-                <span style="position:absolute; top:10px; right:20px; cursor:pointer; font-size:24px;" onclick="closeModal()">&times;</span>
-                <div id="modal-content-area"></div>
-            </div>
-        </div>
     </div>
 
     <div id="login-screen">
@@ -115,8 +96,8 @@
         </nav>
 
         <div id="hub-menu">
-            <h1 style="color:var(--neon-cyan); letter-spacing:8px; margin-bottom:5px;">TERMINAL v4.7</h1>
-            <p style="color:var(--neon-violet); font-family:monospace; margin-bottom:40px;">WIDE ANGLE SURVEILLANCE MODE.</p>
+            <h1 style="color:var(--neon-cyan); letter-spacing:8px; margin-bottom:5px;">TERMINAL v4.8</h1>
+            <p style="color:var(--neon-violet); font-family:monospace; margin-bottom:40px;">DEZOOMED SURVEILLANCE FEED.</p>
             <div class="hub-grid">
                 <div class="hub-item" onclick="showTab('interpol-tab')"><h3>INTERPOL</h3></div>
                 <div class="hub-item" onclick="showTab('plan-tab')"><h3>PLANNING</h3></div>
@@ -126,12 +107,12 @@
         </div>
 
         <div id="interpol-tab" class="tab-content">
-            <div class="filter-grid">
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:8px; width:100%; max-width:900px; background:rgba(0,0,0,0.5); padding:15px; border-radius:10px; border:1px solid var(--neon-violet); margin-bottom:20px;">
                 <input type="text" id="f-name" placeholder="Name">
                 <input type="text" id="f-forename" placeholder="Forename">
                 <button onclick="fetchNotices()" class="btn-action">RUN SCAN</button>
             </div>
-            <div id="notices-grid"></div>
+            <div id="notices-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:15px; width:100%; max-width:1050px;"></div>
         </div>
 
         <div id="cia-tab" class="tab-content">
@@ -170,16 +151,12 @@
     }
 
     function goToHub() {
-        const videoCont = document.getElementById('video-container');
-        const video = document.getElementById('video-bg');
-        
-        videoCont.style.display = 'block';
+        document.getElementById('video-container').style.display = 'block';
         document.getElementById('hub-menu').style.display = 'flex';
         document.getElementById('top-nav').style.display = 'none';
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.body.style.background = "black";
-        
-        video.play().catch(e => console.log("Autoplay bloqué, attente interaction."));
+        document.getElementById('video-bg').play().catch(e => {});
     }
 
     function showTab(id) {
@@ -197,27 +174,6 @@
         if(id === 'interpol-tab') fetchNotices();
     }
 
-    // --- INTERPOL ---
-    async function secureFetch(url) {
-        const proxyList = [(u) => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, (u) => `https://corsproxy.io/?${encodeURIComponent(u)}` ];
-        for (let p of proxyList) { try { const r = await fetch(p(url)); const d = await r.json(); return d.contents ? JSON.parse(d.contents) : d; } catch(e) {} }
-    }
-
-    async function fetchNotices() {
-        const grid = document.getElementById('notices-grid');
-        grid.innerHTML = "SCANNING...";
-        try {
-            const data = await secureFetch(`https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&name=${document.getElementById('f-name').value}&forename=${document.getElementById('f-forename').value}`);
-            grid.innerHTML = "";
-            data._embedded.notices.forEach(n => {
-                const card = document.createElement('div'); card.className = 'notice-card';
-                card.innerHTML = `<img src="${n._links.thumbnail ? n._links.thumbnail.href : ''}"><h4>${n.name}</h4>`;
-                grid.appendChild(card);
-            });
-        } catch(e) {}
-    }
-
-    // --- SYSTEM ---
     const rowsBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
         let r = `<tr><td style="color:var(--neon-cyan); font-weight:bold; width:60px;">${h}:00</td>`;
@@ -229,7 +185,6 @@
     function initMap() { if (mapStarted) return; myMap = L.map('map').setView([48.85, 2.35], 4); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); mapStarted = true; }
     function locateGPS() { navigator.geolocation.getCurrentPosition((pos) => { L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(myMap).bindPopup("YOU").openPopup(); myMap.setView([pos.coords.latitude, pos.coords.longitude], 15); }); }
     async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`TARGET: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
-    function closeModal() { document.getElementById('modal-container').style.display = 'none'; }
 </script>
 </body>
 </html>
