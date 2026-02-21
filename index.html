@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourSpace - Global Cyber Hub v3.5</title>
+    <title>YourSpace - Global Cyber Hub v3.6</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -19,50 +19,50 @@
 
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); color: white; height: 100vh; overflow: hidden; }
 
-        /* --- LOGIN SCREEN --- */
+        /* --- LOGIN --- */
         #login-screen { position: fixed; inset: 0; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 5000; }
         .login-card { background: var(--glass); padding: 50px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid var(--neon-violet); text-align: center; box-shadow: 0 0 30px var(--neon-violet); }
-        input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; font-size: 14px; }
+        input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); color: white; padding: 12px; border-radius: 5px; outline: none; }
 
         /* --- NAVIGATION (LARGE) --- */
         #main-app { display: none; height: 100vh; flex-direction: column; }
         nav { display: flex; justify-content: center; gap: 15px; padding: 25px; background: rgba(0,0,0,0.5); border-bottom: 2px solid var(--neon-violet); flex-wrap: wrap; }
-        .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 25px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+        .nav-btn { background: none; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); padding: 12px 25px; border-radius: 40px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 14px; font-weight: bold; }
         .nav-btn.active { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 20px var(--neon-cyan); }
 
-        .tab-content { display: none; flex: 1; padding: 30px; overflow-y: auto; align-items: center; flex-direction: column; }
+        .tab-content { display: none; flex: 1; padding: 20px; overflow-y: auto; align-items: center; flex-direction: column; }
         .tab-content.active { display: flex; }
 
         /* --- INTERPOL GRID --- */
-        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid var(--neon-violet); margin-bottom: 25px; }
-        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
-        .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .notice-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; }
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid var(--neon-violet); margin-bottom: 20px; }
+        #notices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; width: 100%; max-width: 1100px; }
+        .notice-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .notice-card:hover { border-color: var(--neon-violet); transform: scale(1.03); }
+        .notice-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
 
         /* --- MODAL --- */
         #detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 6000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-violet); border-radius: 20px; width: 100%; max-width: 800px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .close-modal { position: absolute; top: 20px; right: 25px; color: var(--neon-cyan); font-size: 35px; cursor: pointer; }
-        .fiche-header { display: flex; gap: 30px; border-bottom: 1px solid #444; padding-bottom: 20px; margin-bottom: 20px; }
-        .fiche-img-large { width: 220px; height: 280px; border-radius: 10px; border: 2px solid var(--neon-cyan); object-fit: cover; }
+        .modal-content { background: var(--bg-dark); border: 2px solid var(--neon-violet); border-radius: 20px; width: 100%; max-width: 750px; padding: 25px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; color: var(--neon-cyan); font-size: 35px; cursor: pointer; }
+        .fiche-header { display: flex; gap: 25px; border-bottom: 1px solid #444; padding-bottom: 15px; }
+        .fiche-img-large { width: 200px; height: 260px; border-radius: 10px; border: 2px solid var(--neon-cyan); object-fit: cover; }
 
-        /* --- MAP & SCHEDULE --- */
-        #map { width: 100%; max-width: 1000px; height: 500px; border-radius: 20px; border: 2px solid var(--neon-violet); }
-        .schedule-table { width: 100%; border-collapse: collapse; min-width: 900px; }
-        th { background: var(--neon-violet); color: white; padding: 15px; }
-        td { border: 1px solid rgba(255,255,255,0.1); padding: 12px; text-align: center; }
+        /* --- SCHEDULE (SHRUNK) --- */
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 800px; font-size: 11px; background: rgba(0,0,0,0.2); }
+        .schedule-table th { background: var(--neon-violet); color: white; padding: 8px; text-transform: uppercase; font-size: 11px; }
+        .schedule-table td { border: 1px solid rgba(255,255,255,0.1); padding: 6px; text-align: center; height: 28px; }
+        .time-col { color: var(--neon-cyan); font-weight: bold; width: 80px; }
 
-        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .loader { color: var(--neon-cyan); font-family: monospace; padding: 20px; font-size: 14px; text-align: center; }
+        /* --- UI ELEMENTS --- */
+        .btn-action { background: var(--neon-violet); border: none; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+        #map { width: 100%; max-width: 1000px; height: 450px; border-radius: 15px; border: 2px solid var(--neon-violet); }
+        .loader { color: var(--neon-cyan); font-family: monospace; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
 
     <div id="detail-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div id="modal-content-area"></div>
-        </div>
+        <div class="modal-content"><span class="close-modal" onclick="closeModal()">&times;</span><div id="modal-content-area"></div></div>
     </div>
 
     <div id="login-screen">
@@ -82,19 +82,19 @@
         </nav>
 
         <div id="interpol-tab" class="tab-content active">
-            <h2 style="color:var(--neon-violet); text-transform:uppercase;">Interpol Intelligence Portal</h2>
+            <h2 style="color:var(--neon-violet); margin-top:0;">Interpol Red Notice Intelligence</h2>
             <div class="filter-grid">
                 <div class="filter-group"><label>Forename</label><input type="text" id="f-forename"></div>
                 <div class="filter-group"><label>Family Name</label><input type="text" id="f-name"></div>
-                <div class="filter-group"><label>Nationality</label><input type="text" id="f-nat" placeholder="ISO Code"></div>
+                <div class="filter-group"><label>Nationality</label><input type="text" id="f-nat" placeholder="ISO"></div>
                 <div class="filter-group"><label>Gender</label><select id="f-gender"><option value="">ALL</option><option value="M">MALE</option><option value="F">FEMALE</option></select></div>
                 <div class="filter-group"><label>Age Min</label><input type="number" id="f-age-min" value="0"></div>
                 <div class="filter-group"><label>Age Max</label><input type="number" id="f-age-max" value="120"></div>
-                <button onclick="fetchNotices()" class="btn-action" style="margin-top:auto;">RUN QUERY</button>
+                <button onclick="fetchNotices()" class="btn-action">SEARCH</button>
             </div>
-            <div id="notices-loader" class="loader">> STANDBY: ATTEMPTING SECURE TUNNEL...</div>
+            <div id="notices-loader" class="loader">> CONNECTING...</div>
             <div id="notices-grid"></div>
-            <button id="load-more" onclick="nextPage()" class="btn-action" style="display:none; margin-top:30px">LOAD MORE</button>
+            <button id="load-more" onclick="nextPage()" class="btn-action" style="display:none; margin-top:20px">LOAD MORE</button>
         </div>
 
         <div id="plan-tab" class="tab-content">
@@ -104,114 +104,100 @@
                     <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action" style="margin-top:25px">ENCRYPT DATABASE</button>
+            <button onclick="saveSchedule()" class="btn-action" style="margin-top:15px">ENCRYPT DATA</button>
         </div>
 
         <div id="map-tab" class="tab-content">
-            <div style="display:flex; gap:15px; margin-bottom:20px; width:100%; max-width:600px;">
-                <input type="text" id="input-ip" placeholder="Target IP" style="flex:1;">
-                <button onclick="trackCustomIP()" class="btn-action">TRACK</button>
-                <button onclick="locateGPS()" class="btn-action" style="background:var(--neon-cyan); color:black;">MY GPS</button>
+            <div style="display:flex; gap:10px; margin-bottom:15px; width:100%; max-width:600px;">
+                <input type="text" id="input-ip" placeholder="IP Address" style="flex:1;"><button onclick="trackCustomIP()" class="btn-action">TRACK</button><button onclick="locateGPS()" class="btn-action" style="background:var(--neon-cyan); color:black;">GPS</button>
             </div>
             <div id="map"></div>
         </div>
 
         <div id="ai-tab" class="tab-content">
-             <div style="width:100%; max-width:600px; background:var(--glass); padding:30px; border-radius:25px;">
-                <input type="password" id="api-key" placeholder="OpenAI Key" style="width:95%; margin-bottom:20px;">
-                <div id="messages" style="height:300px; overflow-y:auto; margin-bottom:20px; display:flex; flex-direction:column; gap:12px;"></div>
-                <div style="display:flex; gap:10px;"><input type="text" id="user-input" placeholder="Command..." style="flex:1;"><button onclick="askAI()" class="btn-action">EXECUTE</button></div>
+             <div style="width:100%; max-width:600px; background:var(--glass); padding:25px; border-radius:20px;">
+                <input type="password" id="api-key" placeholder="OpenAI Key" style="width:95%; margin-bottom:15px;">
+                <div id="messages" style="height:250px; overflow-y:auto; margin-bottom:15px; display:flex; flex-direction:column; gap:10px;"></div>
+                <div style="display:flex; gap:10px;"><input type="text" id="user-input" placeholder="Query..." style="flex:1;"><button onclick="askAI()" class="btn-action">OK</button></div>
              </div>
         </div>
     </div>
 
 <script>
     let myMap; let mapStarted = false; let currentPage = 1;
-    const defaultCourses = { "8-1": "MATHS", "10-1": "PHYSICS", "13-1": "ENGINEERING", "8-6": "EXAM (DS)" };
+    const defaultCourses = { "8-1": "MATHS", "10-1": "PHYSICS", "13-1": "ENGINEERING", "8-6": "DS EXAM" };
 
-    // --- ULTIMATE MULTI-PROXY FALLBACK SYSTEM ---
+    // --- SECURE PROXY & IMAGE BYPASS ---
     async function secureFetch(url) {
         const proxyList = [
             (u) => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
-            (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-            (u) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`
+            (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`
         ];
-
-        for (let i = 0; i < proxyList.length; i++) {
+        for (let proxy of proxyList) {
             try {
-                const proxyUrl = proxyList[i](url);
-                const resp = await fetch(proxyUrl);
-                if (!resp.ok) continue;
-
+                const resp = await fetch(proxy(url));
                 const data = await resp.json();
-                // AllOrigins wraps the content in a 'contents' field
                 return data.contents ? JSON.parse(data.contents) : data;
-            } catch (e) {
-                console.warn(`Proxy ${i+1} failed, trying next...`);
-            }
+            } catch (e) { continue; }
         }
-        throw new Error("All proxy protocols failed.");
+        throw new Error("Proxy error");
+    }
+
+    // Proxy spécial pour afficher les images sans blocage Referer
+    function getProxyImg(rawImg) {
+        if(!rawImg) return 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png';
+        return `https://images.weserv.nl/?url=${encodeURIComponent(rawImg.replace('http://', 'https://'))}`;
     }
 
     async function fetchNotices(reset = true) {
         if(reset) { currentPage = 1; document.getElementById('notices-grid').innerHTML = ""; }
         const loader = document.getElementById('notices-loader');
         loader.style.display = "block";
-        loader.innerText = "> ATTEMPTING SECURE TUNNEL...";
-
-        let apiUrl = `https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&page=${currentPage}&name=${document.getElementById('f-name').value}&forename=${document.getElementById('f-forename').value}&nationality=${document.getElementById('f-nat').value}&gender=${document.getElementById('f-gender').value}&ageMin=${document.getElementById('f-age-min').value}&ageMax=${document.getElementById('f-age-max').value}`;
+        const url = `https://ws-public.interpol.int/notices/v1/red?resultPerPage=20&page=${currentPage}&name=${document.getElementById('f-name').value}&forename=${document.getElementById('f-forename').value}&nationality=${document.getElementById('f-nat').value}&gender=${document.getElementById('f-gender').value}&ageMin=${document.getElementById('f-age-min').value}&ageMax=${document.getElementById('f-age-max').value}`;
         
         try {
-            const data = await secureFetch(apiUrl);
+            const data = await secureFetch(url);
             loader.style.display = "none";
             document.getElementById('load-more').style.display = data.total > 20 ? "block" : "none";
-            
             data._embedded.notices.forEach(n => {
                 const card = document.createElement('div');
                 card.className = 'notice-card';
                 card.onclick = () => openNoticeDetail(n._links.self.href);
-                const img = n._links.thumbnail ? n._links.thumbnail.href : 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png';
+                const img = getProxyImg(n._links.thumbnail ? n._links.thumbnail.href : null);
                 card.innerHTML = `<img src="${img}"><h4>${n.name}</h4><p>${n.forename || ''}</p>`;
                 document.getElementById('notices-grid').appendChild(card);
             });
-        } catch(e) { 
-            loader.innerText = "> FATAL ERROR: CONNECTION REFUSED BY INTERPOL ENCRYPTION.";
-        }
+        } catch(e) { loader.innerText = "> CONNECTION ERROR."; }
     }
 
     async function openNoticeDetail(rawUrl) {
         const area = document.getElementById('modal-content-area');
         document.getElementById('detail-modal').style.display = "flex";
-        area.innerHTML = "<p>> DECRYPTING AGENT DOSSIER...</p>";
-
+        area.innerHTML = "<p>> DECRYPTING...</p>";
         try {
             const d = await secureFetch(rawUrl);
-            const photo = d._links.images ? d._links.images.href : (d._links.thumbnail ? d._links.thumbnail.href : 'https://www.interpol.int/bundle/interpoltheme/images/red-notice-default.png');
-            
+            const photo = getProxyImg(d._links.images ? d._links.images.href : (d._links.thumbnail ? d._links.thumbnail.href : null));
             area.innerHTML = `
                 <div class="fiche-header">
                     <img src="${photo}" class="fiche-img-large">
                     <div style="flex:1">
                         <h1 style="color:var(--neon-violet); margin:0;">${d.name}</h1>
                         <h2 style="color:white; margin:0;">${d.forename || ''}</h2>
-                        <p style="color:#ff4757; font-weight:bold; letter-spacing:2px; margin-top:15px;">⚠️ WANTED SUBJECT</p>
-                        <div style="font-family:monospace; color:var(--neon-cyan); margin-top:20px;">ENTITY ID: ${d.entity_id}</div>
+                        <p style="color:#ff4757; font-weight:bold; margin-top:10px;">⚠️ WANTED SUBJECT</p>
+                        <div style="font-family:monospace; color:var(--neon-cyan); margin-top:20px;">ID: ${d.entity_id}</div>
                     </div>
                 </div>
-                <div class="section-title">Identity Profile</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <div><span style="color:var(--neon-cyan); font-size:10px;">DOB</span><div style="font-weight:bold;">${d.date_of_birth || 'N/A'}</div></div>
-                    <div><span style="color:var(--neon-cyan); font-size:10px;">NATIONALITIES</span><div style="font-weight:bold;">${d.nationalities ? d.nationalities.join(', ') : 'N/A'}</div></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
+                    <div><span style="color:var(--neon-cyan); font-size:10px;">DOB</span><div>${d.date_of_birth || 'N/A'}</div></div>
+                    <div><span style="color:var(--neon-cyan); font-size:10px;">NAT</span><div>${d.nationalities ? d.nationalities.join(', ') : 'N/A'}</div></div>
                 </div>
-                <div class="section-title" style="color:#ff4757;">Active Charges</div>
-                <div style="background:rgba(255,0,0,0.1); border:1px solid #ff4757; padding:15px; border-radius:10px; color:#ff4757;">
-                    ${d.arrest_warrants ? d.arrest_warrants[0].charge : 'CLASSIFIED'}
-                </div>
-            `;
-        } catch(e) { area.innerHTML = "> ERROR: DOSSIER ENCRYPTION TOO STRONG."; }
+                <div style="background:rgba(255,0,0,0.1); border:1px solid #ff4757; padding:12px; border-radius:8px; color:#ff4757; margin-top:20px;">
+                    <strong>CHARGES:</strong><br>${d.arrest_warrants ? d.arrest_warrants[0].charge : 'CLASSIFIED'}
+                </div>`;
+        } catch(e) { area.innerHTML = "> ACCESS DENIED."; }
     }
 
-    // --- APP CORE ---
+    // --- CORE LOGIC ---
     function unlock() { if(btoa(document.getElementById('code').value) === "dG9tMTIzNA==") { document.getElementById('login-screen').style.display = 'none'; document.getElementById('main-app').style.display = 'flex'; loadSchedule(); fetchNotices(); } }
     function showTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -224,16 +210,16 @@
 
     const rowsBody = document.getElementById('table-rows');
     for (let h = 8; h < 22; h++) {
-        let r = `<tr><td style="color:var(--neon-cyan); font-weight:bold;">${h}:00</td>`;
+        let r = `<tr><td class="time-col">${h}:00</td>`;
         for (let d = 1; d <= 7; d++) { r += `<td contenteditable="true" id="cell-${h}-${d}"></td>`; }
         rowsBody.innerHTML += r + `</tr>`;
     }
 
-    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("DATA SAVED"); }
+    function saveSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText); } } alert("SAVED"); }
     function loadSchedule() { for (let h = 8; h < 22; h++) { for (let d = 1; d <= 7; d++) { const cell = document.getElementById(`cell-${h}-${d}`); cell.innerText = localStorage.getItem(`plan-${h}-${d}`) || ""; } } }
     function initMap() { if (mapStarted) return; myMap = L.map('map').setView([48.85, 2.35], 4); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(myMap); document.querySelector('.leaflet-tile-pane').style.filter = "brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3)"; mapStarted = true; }
     function locateGPS() { navigator.geolocation.getCurrentPosition((pos) => { const { latitude, longitude } = pos.coords; L.marker([latitude, longitude]).addTo(myMap).bindPopup("YOU").openPopup(); myMap.setView([latitude, longitude], 15); }); }
-    async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`TARGET: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
+    async function trackCustomIP() { const ip = document.getElementById('input-ip').value; const resp = await fetch(`https://ipapi.co/${ip}/json/`); const data = await resp.json(); L.marker([data.latitude, data.longitude]).addTo(myMap).bindPopup(`IP: ${data.ip}`).openPopup(); myMap.setView([data.latitude, data.longitude], 12); }
 </script>
 </body>
 </html>
