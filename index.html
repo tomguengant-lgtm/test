@@ -8,7 +8,7 @@
         :root {
             --bg-dark: #0f0c29;
             --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            --neon-violet: #b449cc; /* Ta nouvelle couleur */
+            --neon-violet: #b449cc;
             --neon-cyan: #00d2ff;
             --glass: rgba(255, 255, 255, 0.05);
         }
@@ -29,7 +29,7 @@
             backdrop-filter: blur(10px); border: 1px solid var(--neon-violet);
             text-align: center; box-shadow: 0 0 20px var(--neon-violet);
         }
-        input[type="password"] {
+        input[type="password"], input[type="text"] {
             background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan);
             color: white; padding: 10px; border-radius: 5px; text-align: center; outline: none;
         }
@@ -74,8 +74,9 @@
     <div id="login-screen">
         <div class="login-card">
             <h2 style="color: var(--neon-cyan)">ACCÈS HUB</h2>
-            <input type="password" id="code" placeholder="CODE PIN">
+            <input type="password" id="code" placeholder="CODE D'ACCÈS">
             <button onclick="unlock()" class="btn-action">ENTRER</button>
+            <p id="error-msg" style="color: #ff4757; display: none; font-size: 12px; margin-top: 10px;">Code incorrect !</p>
         </div>
     </div>
 
@@ -106,11 +107,10 @@
                             <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
                         </tr>
                     </thead>
-                    <tbody id="table-rows">
-                        </tbody>
+                    <tbody id="table-rows"></tbody>
                 </table>
             </div>
-            <button onclick="saveSchedule()" class="btn-action">Sauvegarder les modifications</button>
+            <button onclick="saveSchedule()" class="btn-action">Sauvegarder</button>
         </div>
     </div>
 
@@ -126,13 +126,20 @@
         tableRows.innerHTML += row;
     }
 
-    // --- LOGIQUE GÉNÉRALE ---
+    // --- LOGIQUE DE DÉVERROUILLAGE (Nouveau code : tom1234) ---
     function unlock() {
-        if(btoa(document.getElementById('code').value) === "MTIzNDU2") {
+        const input = document.getElementById('code').value;
+        const encodedInput = btoa(input);
+        const secretCode = "dG9tMTIzNA=="; // Correspond à tom1234
+
+        if(encodedInput === secretCode) {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             checkAutoReset();
             loadSchedule();
+        } else {
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('code').value = "";
         }
     }
 
@@ -143,7 +150,7 @@
         event.target.classList.add('active');
     }
 
-    // --- LOGIQUE IA ---
+    // --- IA VOCALE ---
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'fr-FR';
     function startListening() { recognition.start(); }
@@ -163,21 +170,21 @@
             });
             const data = await resp.json();
             const reply = data.choices[0].message.content;
-            box.innerHTML += `<div class="msg ai">${reply}</div>`;
+            box.innerHTML += `<div class="msg ai"><b>IA:</b> ${reply}</div>`;
+            box.scrollTop = box.scrollHeight;
             const ut = new SpeechSynthesisUtterance(reply); ut.lang = 'fr-FR'; window.speechSynthesis.speak(ut);
         } catch(e) { alert("Erreur API"); }
     }
 
-    // --- LOGIQUE SAUVEGARDE ---
+    // --- SAUVEGARDE PLANNING ---
     function saveSchedule() {
         for (let h = 8; h < 22; h++) {
             for (let d = 1; d <= 7; d++) {
-                const content = document.getElementById(`cell-${h}-${d}`).innerText;
-                localStorage.setItem(`plan-${h}-${d}`, content);
+                localStorage.setItem(`plan-${h}-${d}`, document.getElementById(`cell-${h}-${d}`).innerText);
             }
         }
         localStorage.setItem('last_week_num', getWeekNumber(new Date()));
-        alert("Modifications enregistrées !");
+        alert("Planning enregistré !");
     }
 
     function loadSchedule() {
@@ -192,7 +199,7 @@
         const currentWeek = getWeekNumber(new Date());
         const lastWeek = localStorage.getItem('last_week_num');
         if (lastWeek && currentWeek !== parseInt(lastWeek)) {
-            localStorage.clear(); // Reset tout si nouvelle semaine
+            localStorage.clear();
             loadSchedule();
         }
     }
